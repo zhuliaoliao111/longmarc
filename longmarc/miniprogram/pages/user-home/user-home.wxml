@@ -1,0 +1,68 @@
+<!--pages/user-home/user-home.wxml-->
+<view class="container">
+  <!-- 背景图片 -->
+  <image class="page-bg-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+  
+  <!-- 内容区域 -->
+  <view class="content-area">
+    <!-- 顶部用户信息区域 -->
+    <view class="user-info-section">
+      <view class="user-info">
+        <view class="avatar-section">
+          <image
+            class="user-avatar"
+            src="{{processedAvatarUrl}}"
+            mode="aspectFill"
+            binderror="onAvatarLoadError"
+          ></image>
+        </view>
+        <view class="user-details">
+          <view class="user-name">{{userInfo.nickName || '微信用户'}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 统计数据区域 -->
+    <view class="stats-section">
+      <view class="stat-item">
+        <view class="stat-value">{{totalScoreDisplay}}</view>
+        <view class="stat-label">累计前进</view>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <view class="stat-value">{{todaySteps}}</view>
+        <view class="stat-label">今日微信步数</view>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <view class="stat-value">{{currentLocation}}</view>
+        <view class="stat-label">当前位置</view>
+      </view>
+    </view>
+
+    <!-- 解锁章节预览 -->
+    <view class="chapters-section">
+      <view class="section-title">解锁章节</view>
+      <view class="chapters-grid">
+        <view
+          class="chapter-item {{item.isUnlocked ? 'unlocked' : 'locked'}}"
+          wx:for="{{chapterList}}"
+          wx:key="name"
+        >
+          <view class="chapter-content">
+            <image class="chapter-icon {{item.isUnlocked ? '' : 'grayscale'}}" src="{{item.image}}" mode="aspectFit"></image>
+            <view class="chapter-name red-text {{item.isUnlocked ? '' : 'grayscale-text'}}">{{item.name}}</view>
+            <view class="chapter-status {{item.isUnlocked ? 'unlocked' : ''}} red-text {{item.isUnlocked ? '' : 'grayscale-text'}}">{{item.statusText}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部按钮区域 -->
+  <view class="bottom-buttons-section">
+    <button class="exercise-record-btn" bindtap="goToExerciseRecord">运动记录</button>
+    <button class="logout-btn" bindtap="logout">退出登录</button>
+  </view>
+
+</view>

@@ -1,0 +1,13 @@
+<!-- vr_experience.wxml -->
+<view class="vr-container">
+  <web-view 
+    src="{{vrUrl}}" 
+    bindload="onWebViewLoad"
+    binderror="onWebViewError"
+  ></web-view>
+  
+  <!-- 返回按钮 -->
+  <view class="back-btn" bindtap="goBack">
+    <text>← 返回</text>
+  </view>
+</view>

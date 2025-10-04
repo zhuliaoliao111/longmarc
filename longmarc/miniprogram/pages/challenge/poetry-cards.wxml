@@ -1,0 +1,59 @@
+<view class="container">
+  <!-- 背景装饰 -->
+  <view class="background-decoration">
+    <image class="background-image" src="{{backgroundImage}}" mode="aspectFill"></image>
+  </view>
+
+  <!-- 返回按钮 -->
+  <view class="back-btn" bindtap="goBack">
+    <text class="back-icon">‹</text>
+  </view>
+
+   <!-- 主标题 -->
+   <view class="main-title-section">
+    <view class="main-title">纸间回响的豪情</view>
+    <view class="main-subtitle">透过笔锋，见证铁血与信仰</view>
+  </view>
+
+  <!-- 画廊容器 -->
+  <view class="gallery-container">
+    <view 
+      class="poetry-card {{index % 2 === 0 ? 'card-left' : 'card-right'}}" 
+      wx:for="{{poetryList}}" 
+      wx:key="index"
+      bindtap="selectPoetry"
+      data-index="{{index}}"
+    >
+      <image 
+        class="card-image" 
+        src="{{item.image}}"
+        mode="aspectFit"
+      ></image>
+      <view class="card-title">{{item.title}}</view>
+    </view>
+  </view>
+
+  <!-- 自定义弹窗 -->
+  <view class="modal-overlay" wx:if="{{showModal}}" catchtouchmove="preventTouchMove">
+    <view class="modal-content" catchtap="" catchtouchmove="">
+      <view class="modal-header">
+        <text class="modal-title">{{selectedPoetry.title}}</text>
+        <view class="close-btn" bindtap="closeModal">×</view>
+      </view>
+      <scroll-view class="modal-body" scroll-y="true" enhanced="true" show-scrollbar="false">
+        <image class="modal-image" src="{{selectedPoetry.image}}" mode="aspectFit"></image>
+        <view class="modal-annotation">
+          <view class="annotation-section">
+            <text class="annotation-title">内容总览</text>
+            <text class="annotation-text">{{selectedPoetry.annotation}}</text>
+          </view>
+          <view class="annotation-section">
+            <text class="annotation-title">书法赏析</text>
+            <text class="annotation-text">{{selectedPoetry.rightAnnotation}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>
+

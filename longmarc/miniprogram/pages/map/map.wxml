@@ -1,0 +1,38 @@
+<view class="container">
+  <!-- 地图 -->
+  <map
+    id="map"
+    style="width: 100%; height: calc(100vh - 60px);"
+    latitude="{{latitude}}"
+    longitude="{{longitude}}"
+    scale="{{scale}}"
+    markers="{{markers}}"
+    polyline="{{polyline}}"
+    enable-3D="true"
+    enable-satellite="{{satellite}}"
+    show-location="true"
+    bindmarkertap="onMarkerTap"
+  />
+
+  <!-- 底部统计栏 -->
+  <view class="stats-bar">
+    <view class="stat-item">
+      <text class="stat-number">{{todayProgress}}km</text>
+      <text class="stat-label">今日前进</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-number">{{totalProgress}}km</text>
+      <text class="stat-label">累计前行</text>
+    </view>
+  </view>
+
+
+  <!-- 开始运动按钮 -->
+  <view class="exercise-btn-container">
+    <button class="exercise-btn" bindtap="startExercise">
+      <view class="exercise-text">
+        <text>GO</text>
+      </view>
+    </button>
+  </view>
+</view>

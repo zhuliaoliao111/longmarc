@@ -1,0 +1,92 @@
+<view class="container">
+  <!-- 内容滚动区域 -->
+  <view class="artifact-card">
+    <!-- VR预览容器 - 固定高度 -->
+    <view class="vr-preview-container">
+      <!-- VR预览图片（替换为八角帽图片） -->
+      <view class="vr-preview" bindtap="openVR">
+        <image
+          src="{{artifactImageUrl}}"
+          mode="aspectFit"
+          class="vr-preview-image"
+        ></image>
+        
+        <!-- VR入口提示（替换为八角帽提示文本） -->
+        <view class="vr-entrance-overlay">
+          <view class="vr-entrance-content">
+            <text class="vr-text">点击进入VR体验</text>
+            <text class="vr-subtitle">360°观察八角帽</text>
+          </view>
+        </view>
+        
+        <!-- VR标识 -->
+        <!-- <view class="vr-badge">
+          <text>VR</text>
+        </view> -->
+      </view>
+    </view>
+    
+    <!-- 文物信息卡片（替换为八角帽信息，保留原数据绑定逻辑） -->
+    <view class="card-header" wx:if="{{artifact}}">
+      <text class="artifact-name">{{artifact.name}}</text>
+    </view>
+    <view class="card-content" wx:if="{{artifact}}">
+      <text class="artifact-material" wx:if="{{artifact.material}}">{{artifact.material}}</text>
+      <text class="artifact-material" wx:if="{{artifact.description}}">
+        {{artifact.description}}
+      </text>
+    </view>
+  </view>
+    
+    <!-- 一顶八角帽的独白（替换为八角帽独白，保留展开/收起逻辑） -->
+    <view class="monologue-container">
+      <view class="monologue-header">
+        <view class="monologue-title-row">
+          <text class="monologue-title">《一顶八角帽的独白》</text>
+          <!-- 音频播放按钮，添加文字显示 -->
+          <view class="audio-btn" bindtap="toggleAudio">
+            <image src="{{isPlaying ? pauseIconUrl : speakerIconUrl}}" mode="aspectFit" class="audio-icon"></image>
+            <text class="audio-text">{{isPlaying ? '暂停' : '播放'}}</text>
+          </view>
+        </view>
+        <!-- 模板中原无divider，不添加 -->
+      </view>
+      
+      <!-- 折叠状态（替换为八角帽开头文本） -->
+      <view wx:if="{{!isExpanded}}">
+        <text class="monologue-text">
+          我是一顶八角帽，静静地陈列在这里。我的灰色布料已经泛黄，帽檐微微卷曲，但正中的红五星依然鲜明...
+        </text>
+        <view class="expand-trigger" bindtap="toggleExpand">
+          <text class="expand-text">点击展开全文</text>
+          <text class="expand-icon">↓</text>
+        </view>
+      </view>
+      
+      <!-- 展开状态（完整填入八角帽独白文本） -->
+      <view wx:if="{{isExpanded}}">
+        <view class="monologue-scroll">
+          <text class="monologue-text">
+            我是一顶八角帽，静静地陈列在这里。我的灰色布料已经泛黄，帽檐微微卷曲，但正中的红五星依然鲜明。我的八个角，象征着红军的四面八方，也见证了中国革命最艰难的岁月。
+          </text>
+          <text class="monologue-text">
+            1934年，我被戴在红六军团战士刘永珍的头上，开始了漫长的长征。我陪伴他爬雪山、过草地，经历了无数个日夜。风雨中，我为他遮挡严寒；烈日下，我为他遮蔽骄阳。汗水浸透了我的布料，战火熏黑了我的帽檐，但我从未离开过他的头顶。
+          </text>
+          <text class="monologue-text">
+            记得过草地时，暴雨如注，刘永珍同志把我让给生病的小战士。那一刻，我明白了"官兵一致"的真正含义。在极端困苦的条件下，一顶帽子传递的是革命同志间最真挚的情谊。
+          </text>
+          <text class="monologue-text">
+            长征胜利后，刘永珍同志将我珍藏起来。1955年，他把我捐赠给旅顺军事博物馆，让更多人了解那段历史。如今，我虽已陈旧，但承载的记忆永不褪色。每一处磨损都是历史的印记，每一个针脚都缝着红军的信念。
+          </text>
+          <text class="monologue-text monologue-conclusion">
+            我不是一顶普通的帽子，我是千万红军战士的缩影，是长征精神的象征。我的八个角，如同八个方向的光芒，照亮了中国革命的道路。虽然我的主人已经老去，但我守护的革命理想永远年轻。
+          </text>
+        </view>
+        <!-- 收起触发器 -->
+        <view class="expand-trigger" bindtap="toggleExpand">
+          <text class="expand-text">收起全文</text>
+          <text class="expand-icon">↑</text>
+        </view>
+      </view>
+    </view>
+  </view>

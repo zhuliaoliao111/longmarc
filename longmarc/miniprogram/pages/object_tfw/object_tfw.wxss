@@ -1,0 +1,314 @@
+page {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #eef7ff;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #eef7ff;
+}
+
+/* 内容滚动区域 
+.content-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 20px;
+}*/
+
+/* VR预览容器 - 固定高度 */
+.vr-preview-container {
+  height: 180px;
+  margin: 15px auto;
+  width: 320px;
+  border-radius: 12px;
+  overflow: hidden;
+  /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); */
+  position: relative;
+}
+
+.vr-preview {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  cursor: pointer;
+}
+
+.vr-preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* VR入口提示 */
+.vr-entrance-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.vr-preview:active .vr-entrance-overlay {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.vr-entrance-content {
+  text-align: center;
+  color: white;
+}
+
+.vr-icon {
+  font-size: 48rpx;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.vr-text {
+  font-size: 32rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5rpx;
+}
+
+.vr-subtitle {
+  font-size: 24rpx;
+  opacity: 0.9;
+  display: block;
+}
+
+/* VR标识 */
+.vr-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #e1d5b3;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 24rpx;
+  font-weight: bold;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* 文物信息卡片 */
+/* .artifact-card {
+  background: white;
+  margin: 5px 15px 15px;
+  border-radius: 12px;
+  justify-content: center;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+} */
+
+.card-header {
+  margin-bottom: 15px;
+  margin: 0 20px 8px;
+}
+
+.artifact-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.artifact-period {
+  font-size: 28rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 0;
+}
+
+.card-content {
+  line-height: 1.5;
+  margin: 0 20px 8px;
+}
+
+.artifact-material {
+  font-size: 28rpx;
+  color: #555;
+  display: block;
+  margin: -5px 0 6px;
+}
+
+.artifact-description {
+  font-size: 28rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+.view-hint {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 4px solid #ffc107;
+}
+
+.view-hint text {
+  font-size: 26rpx;
+  color: #856404;
+  line-height: 1.5;
+}
+
+/* 独白容器 */
+.expand-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15rpx 0;
+  color: #7a0000;
+  font-size: 26rpx;
+  cursor: pointer;
+  margin-top: 10rpx;
+}
+
+.expand-text {
+  margin-right: 8rpx;
+}
+
+.expand-icon {
+  transition: transform 0.3s ease;
+}
+
+/* 可以添加点击反馈 */
+.expand-trigger:active {
+  opacity: 0.8;
+}
+
+.monologue-container {
+  background: white;
+  margin: 15px 15px 5px;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.monologue-header {
+  margin-bottom: 20px;
+}
+
+.monologue-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.monologue-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+}
+
+.audio-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #e1d5b3;
+  color: black;
+  width: 80rpx;
+  height: 80rpx;
+  padding: 5rpx 0;
+  border-radius: 12rpx;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+}
+
+
+.audio-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 4px rgba(102, 126, 234, 0.3);
+}
+
+.audio-icon {
+  width: 30rpx;
+  height: 30rpx;
+  margin-bottom: 2rpx;
+}
+
+.audio-text {
+  font-size: 20rpx;
+  color: #333;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.monologue-content {
+  line-height: 1.8;
+  margin-bottom: 10px;
+}
+
+.monologue-text {
+  font-size: 28rpx;
+  color: #444;
+  display: block;
+  margin-bottom: 5px;
+  text-indent: 2em;
+  margin-top: 0 !important;
+  padding-top: 0 !important; 
+  line-height: 1.8;
+}
+
+.action-btn {
+  background: #eef7ff;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 24px;
+  font-size: 26rpx;
+  box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+}
+
+.action-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 5px rgba(102, 126, 234, 0.3);
+}
+
+/* 历史背景 */
+.historical-context {
+  margin: 15px;
+}
+
+.context-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.card-content {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+.monologue-scroll {
+  max-height: 300rpx;
+  overflow-y: auto;
+  padding-right: 8rpx;
+  margin-top: 0; 
+  padding-top: 0; 
+}

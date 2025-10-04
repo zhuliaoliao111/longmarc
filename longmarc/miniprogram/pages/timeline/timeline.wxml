@@ -1,0 +1,14 @@
+<view class="container">
+  <view class="title">长征时间线</view>
+  <block wx:if="{{loading}}">
+    <view>加载中...</view>
+  </block>
+  <block wx:else>
+    <block wx:for="{{items}}" wx:key="name">
+      <view style="padding:12px 0;border-bottom:1px solid #eee;">
+        <view style="font-weight:600;">{{item.date}} · {{item.name}}</view>
+        <view style="color:#666;margin-top:4px;">{{item.description}}</view>
+      </view>
+    </block>
+  </block>
+</view> 

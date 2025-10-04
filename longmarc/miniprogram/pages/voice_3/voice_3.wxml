@@ -1,0 +1,32 @@
+<view class="book-container">
+  <view class="book-cover">
+    <view class="book-title">八过赤水甩敌人</view>
+    <view class="book-subtitle">长征日记</view>
+  </view>
+  
+  <view class="book-content {{currentPage === 0 ? 'page-flip-in' : ''}}">
+    <view class="page-header">
+      <text class="date">{{pages[currentPage].title}}</text>
+      <view class="voice-btn {{isPlaying ? 'playing' : ''}}" bindtap="toggleVoice">
+        <text class="voice-icon">🎤</text>
+      </view>
+    </view>
+    
+    <view class="page-content">
+      <text class="diary-text">{{pages[currentPage].content}}</text>
+    </view>
+    
+    <view class="page-footer">
+      <view class="page-number">{{currentPage + 1}} / {{pages.length}}</view>
+    </view>
+  </view>
+  
+  <view class="book-controls">
+    <button class="control-btn prev" bindtap="prevPage" disabled="{{currentPage === 0}}">
+      <text>上一页</text>
+    </button>
+    <button class="control-btn next" bindtap="nextPage" disabled="{{currentPage === pages.length - 1}}">
+      <text>下一页</text>
+    </button>
+  </view>
+</view>

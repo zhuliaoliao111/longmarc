@@ -1,0 +1,22 @@
+<view class="container">
+  <view class="title">{{scene.name}}</view>
+  <view class="meta">时间：{{scene.date}}｜位置：{{scene.latitude}}, {{scene.longitude}}</view>
+  <image wx:if="{{scene.cover}}" class="banner" mode="aspectFill" src="{{scene.cover}}" />
+
+  <block wx:if="{{scene.content && scene.content.length}}">
+    <block wx:for="{{scene.content}}" wx:key="index">
+      <view class="content">{{item}}</view>
+    </block>
+  </block>
+  <block wx:elif="{{scene.description}}">
+    <view class="content">{{scene.description}}</view>
+  </block>
+
+  <block wx:if="{{scene.gallery && scene.gallery.length}}">
+    <scroll-view scroll-x="true" class="gallery">
+      <block wx:for="{{scene.gallery}}" wx:key="index">
+        <image class="thumb" mode="aspectFill" src="{{item}}" />
+      </block>
+    </scroll-view>
+  </block>
+</view> 
