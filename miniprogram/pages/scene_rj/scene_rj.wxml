@@ -1,0 +1,157 @@
+<view class="container">
+  <view class="script-container">
+    <!-- 第一页：历史背景页 -->
+    <view wx:if="{{currentStep === 0}}" class="scene1-container">
+      <image 
+        class="background-image1" 
+        src="{{backgroundImageUrl}}" 
+        mode="aspectFill"
+        lazy-load
+        bindtap="goNext"
+      ></image>
+      <view bindtap="goNext" class="content-wrapper">
+        <view class="title1">背景</view>
+        <view class="background-content">
+          <text class="paragraph">
+            {{ backgroundTypedText }}
+            <!-- 光标仅在打字时显示 -->
+            <view class="cursor" wx:if="{{isTyping}}"></view>
+          </text>
+        </view>
+        <view class="actions1" wx:if="{{!isTyping}}">（点击任意处进入下一情景）</view>
+      </view>
+    </view>
+    
+    <!-- 第二页及以后：剧情场景页 -->
+    <view wx:else>
+      <!-- 场景1：战略转移的抉择 -->
+      <view wx:if="{{currentStep === 1}}" bindtap="handleScene1Click" class="scene-outer">
+        <view class="title">场景一：战略转移的抉择</view>
+        <view class="white-box">
+          <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill" lazy-load></image>
+          <view class="content">
+            {{ scene1TypedText }}
+            <view class="cursor" wx:if="{{isScene1Typing}}"></view>
+          </view>
+          
+          <!-- 选择项（未选择时显示，打字结束后才显示） -->
+          <view class="choices" wx:if="{{!showResult && !isScene1Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="你的选择不符合历史实际！1934年红军出发时，宁都已被国民党军控制，直接向北行军会陷入敌军重围，导致重大伤亡。请回溯到上一选择，重新思考！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">从瑞金直接向北，经宁都县快速突破国民党军第一道封锁线</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="2"  
+              data-result="你的选择符合历史决策！党中央当时正是考虑到赣南山区敌军布防薄弱，且于都河可作为行军的天然屏障，最终确定向西南方向出发。剧情继续推进！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">从瑞金向西南方向出发，先绕过于都河，再沿赣南山区向信丰县前进</view>
+            </view>
+          </view>
+          
+          <!-- 结果提示（选择后显示） -->
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          
+          <!-- 操作提示：点击任意处继续 -->
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 场景2：渡河物资的准备 -->
+      <view wx:if="{{currentStep === 2}}" bindtap="handleScene2Click" class="scene-outer">
+        <view class="title">场景二：渡河物资的准备</view>
+        <view class="white-box">
+          <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill" lazy-load></image>
+          <view class="content">
+            {{ scene2TypedText }}
+            <view class="cursor" wx:if="{{isScene2Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene2Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="你的选择不符合历史实际！当时于都河是红军出发的第一道‘关卡’，没有船只和绳索，红军根本无法渡河，后续的行军更无从谈起。请回溯到上一选择，重新权衡！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">优先筹集粮食</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="3" 
+              data-result="你的选择符合历史细节！1934年10月，当地群众为帮助红军，连夜将家中的渔船、木筏集中，还拆下门板、床板制作临时船只，保障了红军顺利渡过于都河。剧情继续推进！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">优先筹集船只和绳索</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 场景3：行军纪律的传达 -->
+      <view wx:if="{{currentStep === 3}}" bindtap="handleScene3Click" class="scene-outer">
+        <view class="title">场景三：行军纪律的传达</view>
+        <view class="white-box">
+          <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill" lazy-load></image>
+          <view class="content">
+            {{ scene3TypedText }}
+            <view class="cursor" wx:if="{{isScene3Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene3Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="你的选择不符合红军纪律！红军是人民的军队，爱护群众利益是根本纪律，且隐蔽行军才能避免暴露行踪，单纯追求速度会导致纪律涣散，还可能暴露行军路线。请回溯到上一选择，重新明确纪律重点！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">强调“快速行军，不惜一切代价突破敌军防线”</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="4"  
+              data-result="你的选择完全符合红军的优良传统！1934年红军出发时，严格遵守‘三大纪律八项注意’，即使紧急渡河时，也没有损坏群众的一草一木，还留下了银元作为借用物资的报酬，赢得了当地群众支持。你成功完成了瑞金出发阶段的所有决策，抵达历史结局！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">强调“爱护群众利益，不拿群众一针一线”</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 最终结局 -->
+      <view wx:if="{{currentStep === 4}}">
+        <view class="title1">最终结局</view>
+        <image class="background-image2" src="{{backgroundImageUrl}}" mode="aspectFill" lazy-load></image>
+        <view class="content1">
+          {{ resultTypedText }}
+          <view class="cursor" wx:if="{{isResultTyping}}"></view>
+        </view>
+        <button bindtap="goHome" class="return-btn" hover-class="btn-hover" wx:if="{{!isResultTyping}}">返回首页</button>
+      </view>
+    </view>
+  </view>
+</view>

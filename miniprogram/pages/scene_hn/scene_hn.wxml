@@ -1,0 +1,152 @@
+<view class="container">
+  <view class="script-container">
+    <!-- 背景页 -->
+    <view wx:if="{{currentStep === 0}}" class="scene1-container">
+      <image 
+        class="background-image1" 
+        src="{{backgroundImageUrl}}" 
+        mode="aspectFill"
+        lazy-load
+        bindtap="goNext"
+      ></image>
+      <view bindtap="goNext" class="content-wrapper">
+        <view class="title1">背景</view>
+        <view class="background-content">
+          <text class="paragraph">
+            {{ backgroundTypedText }}
+            <view class="cursor" wx:if="{{isTyping}}"></view>
+          </text>
+        </view>
+        <view class="actions1" wx:if="{{!isTyping}}">（点击任意处进入下一情景）</view>
+      </view>
+    </view>
+    
+    <!-- 场景页 -->
+    <view wx:else>
+      <!-- 场景1：群众宣传 -->
+      <view wx:if="{{currentStep === 1}}" bindtap="handleScene1Click" class="scene-outer">
+        <view class="title">场景一：群众宣传的策略抉择</view>
+        <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+        <view class="white-box">
+          <view class="content">
+            {{ scene1TypedText }}
+            <view class="cursor" wx:if="{{isScene1Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene1Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="此选择效果有限！当地多数群众不识字，布告无法有效传递信息，生硬的文字表述还会让老乡产生距离感，不利于消除群众疑虑。请回溯重新决策！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">张贴布告宣传：印发文字布告说明会师意义，强调红军宗旨</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="2"  
+              data-result="你的做法获得群众认可！战士们用朴实语言讲述长征故事，老乡们逐渐了解红军是为穷人打天下的队伍，开始主动为部队提供帮助，为会师营造了良好的群众基础。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">开展现场宣讲：组织战士与老乡面对面交流，通俗讲述长征故事</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 场景2：会师仪式筹备 -->
+      <view wx:if="{{currentStep === 2}}" bindtap="handleScene2Click" class="scene-outer">
+        <view class="title">场景二：会师仪式的筹备优先级</view>
+        <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+        <view class="white-box">
+          <view class="content">
+            {{ scene2TypedText }}
+            <view class="cursor" wx:if="{{isScene2Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene2Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="3"  
+              data-result="你的选择符合实际需求！长途跋涉的红军战士最需要基本生活保障，充足的物资让战友们感受到胜利的温暖，也体现了会宁群众对红军的支持，是务实且暖心的决策。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">优先准备物资：筹集粮食、布料，确保战士们吃饱穿暖</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="此选择脱离实际！红军向来崇尚简朴务实，过度追求仪式排场会消耗有限资源，还可能让刚了解红军的群众产生误解，违背了红军的作风原则。请回溯重新权衡！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">优先布置场地：搭建主席台、悬挂标语，打造隆重仪式氛围</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 场景3：会师后行动方向 -->
+      <view wx:if="{{currentStep === 3}}" bindtap="handleScene3Click" class="scene-outer">
+        <view class="title">场景三：会师后的战略决策</view>
+        <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+        <view class="white-box">
+          <view class="content">
+            {{ scene3TypedText }}
+            <view class="cursor" wx:if="{{isScene3Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene3Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="此建议存在风险！会宁地形狭长，不利于大部队机动，国民党军正迅速合围，长期停留会陷入重围，违背了红军“灵活机动”的战略原则。请回溯重新判断！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">原地休整待命：部队疲惫，在会宁休整补充后再定计划</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="4"  
+              data-result="你的建议符合历史决策！红军会师后迅速向陕北转移，摆脱了敌军包围，保存了革命核心力量，为后续抗日战争做好了战略准备，是极具远见的决策。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">主动战略转移：分批次向陕北苏区转移，与当地红军汇合</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 结局 -->
+      <view wx:if="{{currentStep === 4}}">
+        <view class="title1">最终结局</view>
+        <image class="background-image2" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+        <view class="content1" >
+          {{ resultTypedText }}
+          <view class="cursor" wx:if="{{isResultTyping}}"></view>
+        </view>
+        <button bindtap="goHome" class="return-btn" wx:if="{{!isResultTyping}}">返回首页</button>
+      </view>
+    </view>
+  </view>
+</view>

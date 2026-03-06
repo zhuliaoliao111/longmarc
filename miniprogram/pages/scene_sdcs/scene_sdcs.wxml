@@ -1,0 +1,190 @@
+<view class="container">
+  <view class="script-container">
+    <!-- 背景页 -->
+    <view wx:if="{{currentStep === 0}}" class="scene1-container">
+      <image 
+        class="background-image1" 
+        src="{{backgroundImageUrl}}" 
+        mode="aspectFill"
+        lazy-load
+        bindtap="goNext"
+      ></image>
+      <view bindtap="goNext" class="content-wrapper">
+        <view class="title1">背景</view>
+        <view class="background-content">
+          <text class="paragraph">
+            {{ backgroundTypedText }}
+            <view class="cursor" wx:if="{{isTyping}}"></view>
+          </text>
+        </view>
+        <view class="actions1" wx:if="{{!isTyping}}">（点击任意处进入下一情景）</view>
+      </view>
+    </view>
+    
+    <!-- 场景页 -->
+    <view wx:else>
+      <!-- 场景1：一渡赤水 -->
+      <view wx:if="{{currentStep === 1}}" bindtap="handleScene1Click" class="scene-outer">
+        <view class="title">场景一：一渡赤水的突围抉择</view>
+        <view class="white-box">
+          <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+          <view class="content">
+            {{ scene1TypedText }}
+            <view class="cursor" wx:if="{{isScene1Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene1Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="此选择不符合历史决策！川军兵力雄厚且熟悉地形，红军刚经历土城战斗减员，强行突破只会陷入更大包围。请回溯重新思考！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">坚持北上，集中兵力突破川军防线</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="2"  
+              data-result="你的选择符合历史！1935年1月29日，红军果断西渡赤水，这一行动不仅甩开了紧追的郭勋祺部，还让蒋介石‘围歼红军于土城’的计划彻底落空，为后续机动保留了有生力量。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">西渡赤水，向川南机动转移，寻找战机</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 场景2：二渡赤水 -->
+      <view wx:if="{{currentStep === 2}}" bindtap="handleScene2Click" class="scene-outer">
+        <view class="title">场景二：二渡赤水的声东击西</view>
+        <view class="white-box">
+          <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+          <view class="content">
+            {{ scene2TypedText }}
+            <view class="cursor" wx:if="{{isScene2Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene2Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="3"  
+              data-result="你的选择符合历史智慧！1935年2月18日，红军突然回师东渡赤水，以迅雷不及掩耳之势拿下娄山关，接着重占遵义城，歼灭黔军两个师——这是长征以来红军打的第一个大胜仗，彻底提振了全军士气。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">回师东渡赤水，突袭黔北遵义地区</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="此选择不符合实际！川军已形成合围之势，继续周旋只会陷入‘被动挨打’的局面，违背了运动战的精髓。红军正是通过灵活机动才摆脱困境，请回溯重新决策！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">留在川南，与敌军周旋寻找突围机会</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 场景3：三渡赤水 -->
+      <view wx:if="{{currentStep === 3}}" bindtap="handleScene3Click" class="scene-outer">
+        <view class="title">场景三：三渡赤水的调敌奇招</view>
+        <view class="white-box">
+          <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+          <view class="content">
+            {{ scene3TypedText }}
+            <view class="cursor" wx:if="{{isScene3Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene3Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="此选择正中敌军下怀！蒋介石已在乌江沿岸部署了中央军薛岳部的8个师，就等红军东渡。一旦过去，红军会被压缩在乌江与湘江之间，陷入比湘江战役更危险的境地，这是对敌军意图的严重误判。请回溯重新分析！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">东渡乌江，向贵州东部转移</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="4"  
+              data-result="你的选择展现了运动战精髓！1935年3月16日，红军第三次渡过赤水，向川南挺进。蒋介石果然上当，急调所有主力向西追击，围堵遵义的兵力瞬间空了——红军成功把敌军‘牵’到川南，为最后突围创造了条件。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">三渡赤水，重回川南，引诱敌军向西追击</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 场景4：四渡赤水 -->
+      <view wx:if="{{currentStep === 4}}" bindtap="handleScene4Click" class="scene-outer">
+        <view class="title">场景四：四渡赤水的突围决断</view>
+        <view class="white-box">
+          <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+          <view class="content">
+            {{ scene4TypedText }}
+            <view class="cursor" wx:if="{{isScene4Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene4Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="5"  
+              data-result="你的选择完美契合历史！1935年3月21日，红军秘密四渡赤水，突破乌江天险，彻底跳出敌军包围圈，这一整套‘声东击西’的操作，让敌军彻底摸不清红军动向，成为世界军事史上以少胜多的典范。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">四渡赤水，向南突破乌江天险</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="此选择违背了运动战原则！川军主力有6万多人，且熟悉川南地形，红军经过三次渡河已十分疲惫，弹药也不充足，与其决战无疑是‘以卵击石’，不符合长征的战略目标。请回溯体会红军灵活机动的战术！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">继续西进，与川军主力展开决战</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 结局 -->
+      <view wx:if="{{currentStep === 5}}">
+        <view class="title1">最终结局</view>
+        <image class="background-image2" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+        <view class="content1" >
+          {{ resultTypedText }}
+          <view class="cursor" wx:if="{{isResultTyping}}"></view>
+        </view>
+        <button bindtap="goHome" class="return-btn" wx:if="{{!isResultTyping}}">返回首页</button>
+      </view>
+    </view>
+  </view>
+</view>

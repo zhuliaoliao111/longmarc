@@ -1,0 +1,152 @@
+<view class="container">
+  <view class="script-container">
+    <!-- 背景页 -->
+    <view wx:if="{{currentStep === 0}}" class="scene1-container">
+      <image 
+        class="background-image1" 
+        src="{{backgroundImageUrl}}" 
+        mode="aspectFill"
+        lazy-load
+        bindtap="goNext"
+      ></image>
+      <view bindtap="goNext" class="content-wrapper">
+        <view class="title1">背景</view>
+        <view class="background-content">
+          <text class="paragraph">
+            {{ backgroundTypedText }}
+            <view class="cursor" wx:if="{{isTyping}}"></view>
+          </text>
+        </view>
+        <view class="actions1" wx:if="{{!isTyping}}">（点击任意处进入下一情景）</view>
+      </view>
+    </view>
+    
+    <!-- 场景页 -->
+    <view wx:else>
+      <!-- 场景1：路线抉择 -->
+      <view wx:if="{{currentStep === 1}}" bindtap="handleScene1Click" class="scene-outer">
+        <view class="title">场景一：突破路线的抉择</view>
+        <view class="white-box">
+          <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+          <view class="content">
+            {{ scene1TypedText }}
+            <view class="cursor" wx:if="{{isScene1Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene1Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="2"  
+              data-result="你的选择符合历史决策！红军正是通过果断强渡，在敌军完成合围前抢占渡口，为中央纵队撕开了突破口。尽管伤亡惨重，但为后续转移赢得了关键时间。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">强渡全州、兴安间湘江主航道，令红一、红三军团抢占渡口掩护</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="你的选择不符合战场实际！灌阳山区早已被桂军设伏，且迂回会导致中央纵队与作战部队脱节，陷入敌军南北夹击的陷阱，后果不堪设想。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">迂回灌阳山区，先头部队开路，纵队弃部分辎重轻装前进</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 场景2：兵力调配 -->
+      <view wx:if="{{currentStep === 2}}" bindtap="handleScene2Click" class="scene-outer">
+        <view class="title">场景二：渡口防线的坚守</view>
+        <view class="white-box">
+          <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+          <view class="content">
+            {{ scene2TypedText }}
+            <view class="cursor" wx:if="{{isScene2Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene2Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="3"  
+              data-result="你的选择符合历史战术！红军通过调兵支援协同防守，成功顶住了湘军的疯狂反扑，同时牵制了南面桂军，为中央纵队安全渡江争取了宝贵时间。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">调红三军团4师北上支援，协同红一军团，令红二、红五军团牵制桂军</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="你的选择存在战略漏洞！收缩阵地会让敌军形成南北夹击之势，浮桥将直接暴露在炮火之下，中央纵队过江通道会被切断，全军将陷入绝境。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">收缩阵地保浮桥，让红一军团放弃外围，全力掩护纵队过江</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 场景3：转移策略 -->
+      <view wx:if="{{currentStep === 3}}" bindtap="handleScene3Click" class="scene-outer">
+        <view class="title">场景三：最后的转移决策</view>
+        <view class="white-box">
+          <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+          <view class="content">
+            {{ scene3TypedText }}
+            <view class="cursor" wx:if="{{isScene3Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene3Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="4"  
+              data-result="你的选择符合历史事实！红军最终决定轻装速渡，红五军团34师作为后卫拼死掩护，虽几乎全员牺牲，但保住了剩余人员和核心文件，为革命保留了火种。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">轻装速渡，人员弃非必要辎重，令红五军团34师留守掩护</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="你的选择忽视了战场优先级！强行搬运辎重会严重延误渡江时机，导致红34师防线崩溃，滞留人员和物资将被敌军包围，红军最后的有生力量可能损失殆尽。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">全力搬运辎重，延缓渡江速度，让红34师同时护运物资并抵御敌军</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 结局 -->
+      <view wx:if="{{currentStep === 4}}">
+        <view class="title1">最终结局</view>
+        <image class="background-image2" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+        <view class="content1" >
+          {{ resultTypedText }}
+          <view class="cursor" wx:if="{{isResultTyping}}"></view>
+        </view>
+        <button bindtap="goHome" class="return-btn" wx:if="{{!isResultTyping}}">返回首页</button>
+      </view>
+    </view>
+  </view>
+</view>

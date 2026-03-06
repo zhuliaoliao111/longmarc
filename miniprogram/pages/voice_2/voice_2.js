@@ -1,0 +1,684 @@
+// pages/voice_1/voice_1.js
+const tencentTTS = require('../../utils/tencentTTS');
+
+Page({
+  data: {
+    currentPage: 0,
+    isPlaying: false,
+    isSynthesizing: false,
+    audioContext: null,
+    showSettings: false,
+    showNav: false,
+    showCatalog: false,
+    isDarkMode: false,
+    sunIconUrl: '',
+    moonIconUrl: '',
+    voicePlayIconUrl: '',
+    settingsIconUrl: '',
+    catalogIconUrl: '',
+    isFlipping: false,
+    flipPageIndex: 0,
+    nextPageIndex: 0,
+    statusBarHeight: 0,
+    
+    // 触摸相关
+    touchStartX: 0,
+    touchStartY: 0,
+    
+    // 阅读设置
+    fontSize: 30,
+    lineHeightValue: 18,
+    lineHeight: 1.8,
+    marginSize: 40,
+    brightness: 100,
+    flipMode: 'slide',
+    flipAnimation: '',
+    fontFamily: 'STKaiti',
+    contentStyle: '',
+    
+    fontList: [
+      { name: '宋体', value: '宋体' },
+      { name: '汇文明朝', value: '汇文明朝' },
+      { name: '正楷体', value: '正楷体' },
+      { name: '华文楷体', value: 'STKaiti' },
+      { name: '老宋体', value: '老宋体' },
+      { name: '霞鹜文楷', value: 'LXGW WenKai' },
+      { name: '方正楷体', value: '方正楷体' },
+      { name: '默认', value: 'sans-serif' }
+    ],
+    
+    pages: [
+      {
+        title: "一九三四年十一月九日 雨",
+        content: "在九峰圩，军团令我团为先头部队，要在十一日前抢占白石渡（镇），掩护全军通过敌第二道封锁线粤汉铁路，向湘西行动。中央军委周恩来副主席和刘伯承总参谋长今日晨来到一师，带我们三团行动。周副主席身穿灰布军装，披件旧黄布雨衣，着草鞋，脸消瘦，胡子虽然很长，两只大眼还是那么炯炯有神。周副主席详细询问部队的行军、思想情况，如各连多少人，掉队多少，战士们有些什么想法，生活怎样，粮食好不好解决，等等。我们都一一作了汇报。当他知道干部、战士对目前的行军有许多问题想不通时，便耐心地给我们作了解释。他和蔼可亲地对我们说，要一切为着革命，敢于流血牺牲，排除一切困难。同时，在困难的时候，要看到光明和前途，要提高信心和勇气，不要被困难吓倒。"
+      },
+      {
+        title: "一九三四年十一月九日 雨",
+        content: "周副主席还乐观地说，蒋介石围攻苏区，构筑了千沟万垒，妄图置红军于死地，但英勇的红军不是打出来了吗？大王山看上去高不可攀，但我们不是也闯过来了吗？革命本身就是不断地同机会主义和各种艰难险阻进行斗争中得到发展和胜利的。周副主席还告诉我们，蒋介石在粤汉铁路沿线布置了二十万兵力，企图将我军消灭在粤汉铁路以东，赣江以西，我们要赶在敌人布防之前，攻占白石渡，掩护红军主力通过粤汉铁路，向湘西挺进。听了周副主席的一席话，心中豁然开朗，既感到责任重大，又觉得踏实了许多。刘总长年纪较大，身体较弱，视力又不好，走路困难，仍和我们三团一块行军，爬山过河，够辛苦了。上午八时，我们几个团领导决定，马上边行军边召集有关人员开会，把周副主席的指示迅速传达给全团每战员，并立即启程前进，战士们喊着地喊着“一切为着革命”的口号，感到浑身是劲，行军速度加快了好多。晚达芳坑村宿营，行程九十余里。"
+      },
+      {
+        title: "十一月十日 雨",
+        content: "连绵小雨下个不停，但挡不住红军战士前进。晨七时出发，达罗家渡宿营，行程九十里。一路上看到周副主席、刘总长在部队中跟着行军，在营行军中，周副主席将他那匹黄骡子给伤病员骑，自己却步行。他还利用行军小休或防空的机会，不断找战士谈心。每到一地，他和刘总长总是指示部属干部及时查看地形，研究敌情，布置警戒，规定紧急集合地点，调查下一步行军路线。敌人的飞机像蚊子一样，每天都有八九十架次，真讨厌。谭主任电告：沿途要注意扩红工作，能增加一个红军，就是对革命增加一份力量。四连昨日扩了四名新战士，六连扩了六名，增加了战斗力量。九连在梅花圩打了两家地主，没收了财物，上交了二百五十块银元。梅花圩有四百余户，两千余人，有地主八家，富农十家，中农二十五家，贫农三百余家。地主、富农都跑了。一九二八年初，朱德、陈毅、王尔琢等同志带领南昌起义保存下来的一部分队伍，发动了湘南暴动，在这一带成立过县、区苏维埃政府，打过土豪，分过田地，有三名地下党员坚持工作，他们坚信红军一定会打回来，这次真的打回来了。"
+      },
+      {
+        title: "十一月十一日 阴雨",
+        content: "晨七时出发，途中遭敌机扫射，我团伤亡八个同志，大家很悲愤介石。在田头过武水河，赶到白石渡，行程一百十里。在周副主席、刘总长亲自指挥下，我团奋勇杀敌，消灭了何键军阀两个连，胜利攻占了白石渡。周副主席站在镇南的一个小土坎上，微笑着对我们说，你们别看这是个小镇，可它是敌人第三道封锁线的重要支撑点，占领了它，对南挡陈济棠，保证全军通过粤汉铁路有重要作用，这带是大革命时期党领导的工农运动蓬勃发展的地方。尽管白色恐怖严重，但不少同志仍在坚持地下工作，革命总是有希望的。"
+      },
+      {
+        title: "十一月十一日 阴雨",
+        content: "粤汉铁路筑路工人很多，配合红军打了几家土豪，战士们将得来的猪、鸡熟心招待首长，大家共同改善生活。团部宣传队今日沿途扩了四名新战士，补入二连。队长孔瑞云等同志很会做扩红工作，他们的经验应很好总结推广。晚饭后，我们在柯堂里点了几盏猪油灯，挂上地图，我和团政委林龙发、参谋长彭明治等同志围坐在首长周围，请周副主席和刘总长讲形势、全军野战行动及部队必须注意的事项。周副主席一再告诫我们，要关心贫苦工农生活，要同工农站在一起闹革命，要依靠贫苦工农打倒土豪劣绅，组织抗日反蒋苏维埃政府。还要注意加强连队政治思想工作，要提高士气，巩固部队。"
+      },
+      {
+        title: "十一月十二日 雨",
+        content: "早饭后，周副主席和刘总参谋长要离开我们了，我和林政委、彭参谋长等一直把他们送到白石渡镇外，握手告别。周副主席亲切地拍着我的肩膀说，忠渭同志，我们到白区作战，困难很多，你是总支书记，越是在这个时候，越要加强连队党支部的战斗堡垒作用。要认真执行党的政策，要坚定地相信和依靠群众，搞好宣传工作，使红军走过的地方都播下革命的火种。他指着岗哨上的战士背上背着写有“站好岗”几个字的识字牌称赞说，既打仗行军，又识字，战斗不忘学习，这个办法好。我们工农现在打仗需要文化，将来建设新中国更需要文化。我激动地回答：“是！”他点点头，高兴地走了。我久久地望着他远去的身影，反复地回味几天来周副主席的亲切教导，对前途充满着必胜的信心。师政谭主任布置在白石渡镇休整几天，要求扩红三百名。我担负扩红和筹款工作，到各连去了解情况，走了六十五里。"
+      },
+      {
+        title: "十一月十三日 雨",
+        content: "这两天整训、扩红，成绩不小。一营通讯班长陈忠梅兼任营青年干事，工作搞得很活跃，他们扩红三十三名，筹得现洋五千元。七连扩红筹款成绩突出。六连扩红十五名，团部特派员小袁跟三营突击队扩红四十二人。全团扩红三百余人，筹款两万多元。战士们说，在白区作战，比在苏区吃得好一点，就是粮食无保障，老是饿几顿饱几顿。在师政治部的领导下，成立了白石渡三个区苏维埃政府，发展党员四十二人，建立了三个秘密支部，成立了六十多人的红色游击队，百多人的武装赤卫队。红军战士做到见群众就宣传共产党抗日反蒋，建立苏维埃的政策。"
+      },
+      {
+        title: "十一月十三日 雨",
+        content: "午后，谭政主任在我团召开政工会议，总结几天来在白石渡宣传赤化和扩红经验。谭主任说，红军是穷人的军队，天下穷人是一家，无产者只有解放全人类，才能最后解放自己。日本帝国主义已侵占东北，只有全民团结，打败日本帝国主义，消灭国民党，建设新中国，才有希望。谭主任还说明了部队到外线作战的意义和今后的任务，提出的口号是，赤化湘西南，与贺龙、萧克部队会合，粉碎敌人的第五次“围剿”。现在，“围剿”江西的大多数白军已调到湖南围追红军。我们相信江西的父老兄弟一定会拿起刀枪，同白军英勇战斗，恢复、巩固和发展苏维埃事业！"
+      },
+      {
+        title: "十一月十四日 雨",
+        content: "红一团已向宜章进攻。今天，我团仍在原地休整待命。我们红三团从兴国县乱石坵出征时，共有二千七百二十四人，一路上由于战斗伤亡，只剩下约一千七百人了。这几天，我们在白石渡一带吸收了许多积极要求参军的粤汉铁路修路工人，扩红三百多，现又有两千多人了。我们还发动当地群众，组织了区苏维埃政府，恢复和发展了地下党组织，秘密建立了游击队，把地方工作开展起来了。群众热爱红军，愿意当红军，这是共产党的威信起作用。工农群众就是担心红军走后，地主和靖卫团回来会屠杀他们。湖南人民很有革命经验，也有对付反革命的办法。按前卫团战报，在周副主席、刘总参谋长的亲临指挥下，红一团已占领宜章城。师部令我红三团为先遣队，乘胜袭占蓝山城。我们立即准备，补充衣、鞋，备足粮食，分配新兵。"
+      },
+      {
+        title: "十一月十五日 晴",
+        content: "昨夜通过宜章城，骑田岭，牛荷村，过香花山，到楚江坵宿营，行程一百二十里。楚江坵有五百六十五户人家，一千五百六十余人，其中地主九户，富农六户，中农二十五户，大多是贫雇农。有两个国民党大官的家庭，还有靖卫团长罗田梅的家。我们打了四家土豪，没收了许多衣、被、粮，都分给工农，受到群众热烈欢迎。沿途扩红三十多名，大多是十七、八岁的青年人，其中多数是没吃没穿的苦孩子。劳苦大众满腔热情来参加革命，给红军增添了战斗力量，我们热烈欢迎。"
+      },
+      {
+        title: "十一月十六日 晴",
+        content: "午后四时出发，向南经察木村到石河宿营，行程百余里。一路上有五名新兵开了小差，机枪连扩红八名，掉队四名。搞革命真不容易，有的人吃不得苦，行的人一心牵挂父母妻儿，这些人就干不了革命。说实话，我心里也想念那可怜的瞎眼母亲，但我决不能离开部队，要永远跟着共产党搞革命！"
+      },
+      {
+        title: "十一月十七日 阴",
+        content: "午后四时出发，经临武县的下殿村，向西到水头坵宿营，行程九十里。这一带是红二师占领的，他们曾在这里扩红百余人。现我红一师又在这里扩红二百多人。红军每到一地影响都很大，地主土豪见了吓得屁滚尿流，劳苦大众闻了高兴得了不得，群众心向红军。"
+      },
+      {
+        title: "十一月十八日 雨",
+        content: "上午，周副主席、刘总长第二次来到三团，要亲自率领我们抢占蓝山县城，占领蓝山便可掩护红军主力向西通过。午后四时，经冠守村达黄危铺，行程九十八里。这里离蓝山城不远了。一路下雨，道路很滑。周、刘首长同我们一道行军，给大家鼓舞很大，指战员们情绪都很高。据报告，蓝山城内有一千八百五十多户人家，八千五百多人口，三百余家商店，其中地主经商十五户。城墙很高，且有保安团千余人防守。看来，有一场恶仗要打。"
+      },
+      {
+        title: "十一月十九日 雨",
+        content: "晚七时出发，我跟一营行动，连夜经生田桥奔袭蓝山县城。沿途道路泥泞，很难走。强行军三十里，出敌不意，接近城下。我军发起猛攻，一阵炮火以后，一营冲进南门。经过一小时激战，消灭守敌保安团一个营，何键军阀一个营慑于被歼，狼狈逃窜。城墙又高又厚，要不是保安团无能，要硬攻还真得费点劲。打开伪县府库房，没收银元五千块，金子十多斤，并缴到军装、被服数百件。我们团部驻在伪县府，通知全团要注意政策，保护工商业，一切缴获要归公。乡间有何永柱、任柯兴、吴传华三个地下党员来接头，汇报蓝山县情况。我们将邝长千少尉等几名伤员交给地方党组织，请他们妥善安排。并将三十五支步枪、两挺机枪也交给他们，让他们发展游击队，打击白匪军。据讲，这一带由于受秋收暴动的影响，群众都知道毛委员。"
+      },
+      {
+        title: "十一月二十日 阴雨",
+        content: "晨，周副主席、刘总长离团回中央纵队，我们在蓝山城外送行。军团首长电令，蓝山城由九军团接防，红三团速进占宁远。遵令，将防务情况详细向罗炳辉军团长、蔡树藩政委等首长作了汇报。午后二时出发，经河口达落山庙宿营，行程九十里。道路泥泞难走，掉队很多，尤其是新战士，他们缺乏锻炼，体力不行。二连四班长刘冀生因掉队失去联系。迫击炮连二班长张央知年轻力壮，打炮准确，这次解放蓝山出了大力。政治处汇报，两天来扩红七十五名，有八个雇农，十个中学生。他们有的因父母被反动派杀害，要为父母报仇。有的为了逃婚。大多数青年是为了寻找革命真理，不愿受压迫。他们说，不当红军也得被国民党抓去当炮灰。有兄弟俩扛着锄头来当兵，要为父报仇。没收十五家地主财物，筹款三万多元，筹衣、被一千二百件，备粮很多，这下红军供给又有了本钱。明日袭占宁远，倘能成功，可挡住国民党醉岳、吴奇伟纵队追击，使我中央纵队主力能争取更多时间，胜利渡过湘江。"
+      },
+      {
+        title: "十一月二十一日 雨",
+        content: "午后二时出发，急行军经坝场村、师胡村达冷水铺宿营。据侦察，敌增援兵已达一个团，集中守备宁远城，这给我军攻城造成极大困难。团政治处在林龙发政委主持下，召开政工会议，团、营领导参加。会议分析了形势，总结了打蓝山城后部队的政治思想情况，研究了如何阻挡醉岳、吴纵队追击。并要求注意同地方党的联系，注意对战士进行前途教育，提高红军的战斗力，发扬革命英雄主义精神。"
+      },
+      {
+        title: "十一月二十二日 阴雨",
+        content: "经过一天半准备，晚十时向宁远城发起进攻。我一营进抵南关，突击队多次爬城，战斗越来越激烈，至午夜，我军撤出战斗。据一俘虏供称，昨晚何键两个团和醉岳一个团已入城，敌人还有八个师正在集结，准备阻击红军前进。撤出战斗的决心是正确的，要难备粉碎醉岳、吴奇伟纵队追击。这几天敌机活动很频繁。七连陈敬群副连长，腿被炸断，拒绝治疗，拉响手榴弹，壮烈牺牲。他知道部队离开苏区，伤员不好安排，不愿给队伍增加困难，情愿自我牺牲，同志们都感到很悲愤！"
+      },
+      {
+        title: "十一月二十三日 晴",
+        content: "晨，敌机八架，轮番向我阵地扫射轰击。午，师部令我团换一团在水仔洞、横岭一带担任阻击，掩护主力转移。整天与敌撕杀，我伤亡三十余人，转移二十五里。最大问题是伤员无法妥善安置，只好原地放在群众家。到白区来作战，最困难的是无后方，伤员无法收容，伤了等于死亡。二营六连排长何玉香负重伤，宁死也不愿留下。三营通讯班长刘挺楷，腿被打伤，要把他留下，他打天翻地不干，说爬着也要跟红军走。地方党反映，国民党要在全州、湘江布置第四道封锁线，企图消灭红军。"
+      },
+      {
+        title: "十一月二十四日 晴",
+        content: "整天在西山横岭阵地阻击敌人。午，我们组织全力反击了一下，俘敌百余，敌败退。午后二时，敌又发起进攻，我拼命阻击，一直坚持到晚，才安然撤出战斗。我团掩护任务胜利完成，甩开敌人向西行动。连夜急行军，经沿口村到白芒铺宿营，行程九十里。师部令我团改任前卫，向道州城进发。我三营在白芒铺扩红二十七名，脚秋棠只有十六岁，学做衣服，红军一来，他丢下剪刀，拿起刀枪，愿为工农打天下，这跟我参军时的情况差不多。我也是自幼学做裁缝，于一九二八年一月八日丢下剪刀参军的。"
+      },
+      {
+        title: "十一月二十五日 晴",
+        content: "午后四时出发，经青溪渡潇水河，达道州城宿营，行程百余里。道州城位于潇水河西岸，两面环水，有四千五百人，城墙高，有水壕，控制潇水河通道。师部令我团在道州阻击敌渡潇水河。"
+      },
+      {
+        title: "十一月二十六日 晴",
+        content: "晨，在道州城北门外，又见到了周副主席，我们向他详细汇报了宁远敌情。这时，数架敌机低空盘旋。周副主席告诉我们，蒋介石调集广东、湖南、贵州的军阀共四十万重兵，到湘西布置新的防线，宁远敌人也很快会赶来道州，情况复杂。周副主席要我团在这里稍微休息一下，然后迅速过湘江。最后，他又鼓励我们说，要拿出勇气，敢和各种艰难困苦作斗争。在中国苏维埃运动史上，哪会没有困难！我们有钢铁般的意志，愿为苏维埃英勇战斗，不论到哪个地方，不管碰上什么强敌，要勇气百倍，有条件就就地歼灭之，条件不成熟就转移，另找机会歼灭之。上午八时出发，离开道州经荷叶塘，遇到十八架敌机轰炸，部队疏散着前进，到新铺、曙光、带宿营，行程九十里。"
+      },
+      {
+        title: "十一月二十七日 晴",
+        content: "红一师从桂黄公路的才湾脚山铺沿桂黄公路北的左翼赶路，红二师在右翼，像一把铁钳，紧紧地夹住了中间公路，卡住敌人向北前进的道路。脚山铺是个只有几十户人家的村子。距全州县城约八里。小村子由北向南望，有四个山头，黄帝岭、九文山、美女梳妆台山、凤凰岭、望家山、怀中抱子山、鲁板桥、鸡公岭、文家山、水南村、五里岭、全州、桂黄公路。红一师、红二师正在构筑工事。红一师派独立部队到鲁板桥，占领鸡公岭、文家山。还派部队到水南村，攻占两个碉堡群和五里岭，切断全州石塘路。我军向全州城射击，打得守敌晕头转向，不知红军有多少兵力，这样打已持续了三天，敌人不敢大动。午后全州守敌用三个师，沿桂黄公路南进，晚达鲁板桥，受到红二师的阻击。"
+      }
+    ]
+  },
+
+  async onLoad() {
+    console.log("离开苏区上征途页面加载");
+
+    // 异步获取图片URL
+    const [sunIconUrl, moonIconUrl, voicePlayIconUrl, settingsIconUrl, catalogIconUrl] = await Promise.all([
+      getApp().getImageUrl('太阳.png'),
+      getApp().getImageUrl('月亮.png'),
+      getApp().getImageUrl('语音播放-.png'),
+      getApp().getImageUrl('设置.png'),
+      getApp().getImageUrl('目录.png')
+    ]);
+
+    // 获取系统信息，设置状态栏高度
+    const systemInfo = wx.getSystemInfoSync();
+    const statusBarHeight = systemInfo.statusBarHeight || 0;
+
+    this.updateContentStyle();
+
+    // 从缓存读取主题模式
+    const isDarkMode = wx.getStorageSync('isDarkMode') || false;
+    this.setData({
+      isDarkMode,
+      statusBarHeight,
+      sunIconUrl,
+      moonIconUrl,
+      voicePlayIconUrl,
+      settingsIconUrl,
+      catalogIconUrl
+    });
+  },
+
+  // 使用腾讯云TTS进行语音合成
+  async toggleVoice() {
+    if (this.data.isSynthesizing) {
+      wx.showToast({
+        title: '正在合成语音，请稍候...',
+        icon: 'none'
+      });
+      return;
+    }
+
+    if (this.data.isPlaying) {
+      // 停止播放
+      this.stopAudio();
+    } else {
+      // 开始播放
+      await this.startAudio();
+    }
+  },
+
+  // 开始音频播放
+  async startAudio() {
+    try {
+      // 确保在开始新的音频播放前停止之前可能正在播放的音频
+      this.cleanupAudioContext();
+      
+      this.setData({ isSynthesizing: true });
+      
+      wx.showLoading({
+        title: '正在合成语音...',
+        mask: true
+      });
+
+      const currentText = this.data.pages[this.data.currentPage].content;
+      
+      // 使用腾讯云TTS合成语音，设置returnAllBlocks=true以获取所有音频块
+      const audioData = await tencentTTS.synthesizeWithTencent(
+        currentText,
+        tencentTTS.VOICE_TYPES.narrator, // 使用叙述者音色
+        0, // 语速
+        0, // 音量
+        'neutral', // 情感
+        true // 返回所有音频块，确保完整播放整页内容
+      );
+
+      this.setData({
+        isPlaying: true,
+        isSynthesizing: false
+      });
+
+      wx.hideLoading();
+      wx.showToast({
+        title: '开始播放语音',
+        icon: 'success'
+      });
+
+      // 创建一个临时的音频上下文数组来保存所有播放的音频上下文
+      this.audioContexts = [];
+      
+      // 修改playAudioBlocks的调用方式，传入回调函数来保存音频上下文
+      try {
+        // 自定义播放音频块的方法，确保能管理音频上下文
+        await this.playAudioBlocksWithControl(audioData);
+        // 所有音频块播放完成
+        this.setData({ isPlaying: false });
+        console.log('所有音频块播放完成');
+      } catch (playError) {
+        console.error('音频块播放失败:', playError);
+        this.setData({ isPlaying: false });
+        wx.showToast({
+          title: `音频播放失败: ${playError.message}`,
+          icon: 'none'
+        });
+      }
+
+    } catch (error) {
+      console.error('腾讯云TTS合成失败:', error);
+      this.setData({ isSynthesizing: false });
+      wx.hideLoading();
+      wx.showToast({
+        title: `语音合成失败: ${error.message}`,
+        icon: 'none',
+        duration: 3000
+      });
+    }
+  },
+
+  // 自定义的音频块播放方法，支持音频控制
+  playAudioBlocksWithControl(audioBlocks) {
+    return new Promise((resolve, reject) => {
+      // 处理可能的对象类型输入
+      let actualAudioBlocks = audioBlocks;
+      if (audioBlocks && typeof audioBlocks === 'object' && audioBlocks.audioBlocks) {
+        actualAudioBlocks = audioBlocks.audioBlocks;
+      }
+      
+      if (!actualAudioBlocks || !Array.isArray(actualAudioBlocks) || actualAudioBlocks.length === 0) {
+        reject(new Error('没有有效的音频块需要播放'));
+        return;
+      }
+      
+      let currentBlockIndex = 0;
+      const tempFilePaths = [];
+      
+      // 递归播放每个音频块
+      function playNextBlock() {
+        // 检查是否已停止播放
+        if (!this.data.isPlaying) {
+          resolve(tempFilePaths);
+          return;
+        }
+        
+        if (currentBlockIndex >= actualAudioBlocks.length) {
+          resolve(tempFilePaths);
+          return;
+        }
+        
+        console.log(`播放第${currentBlockIndex + 1}/${actualAudioBlocks.length}个音频块`);
+        
+        const fs = wx.getFileSystemManager();
+        const tempFilePath = `${wx.env.USER_DATA_PATH}/tencent_audio_${Date.now()}_${currentBlockIndex}.mp3`;
+        const blockData = actualAudioBlocks[currentBlockIndex];
+        
+        // 确保数据类型正确
+        if (typeof blockData !== 'string') {
+          console.error(`第${currentBlockIndex + 1}个音频块数据类型错误:`, typeof blockData);
+          reject(new Error(`第${currentBlockIndex + 1}个音频块数据类型错误，期望字符串`));
+          return;
+        }
+        
+        fs.writeFile({
+          filePath: tempFilePath,
+          data: blockData,
+          encoding: 'base64',
+          success: () => {
+            tempFilePaths.push(tempFilePath);
+            // 创建音频上下文播放当前文件
+            const audioContext = wx.createInnerAudioContext();
+            audioContext.src = tempFilePath;
+            
+            // 保存音频上下文到数组
+            this.audioContexts.push(audioContext);
+            
+            audioContext.onEnded(() => {
+              // 从数组中移除已播放完成的音频上下文
+              const index = this.audioContexts.indexOf(audioContext);
+              if (index > -1) {
+                this.audioContexts.splice(index, 1);
+              }
+              
+              // 检查是否已停止播放
+              if (!this.data.isPlaying) {
+                resolve(tempFilePaths);
+                return;
+              }
+              
+              currentBlockIndex++;
+              playNextBlock.call(this);
+            });
+            
+            audioContext.onError(error => {
+              console.error(`第${currentBlockIndex + 1}个音频块播放失败:`, error);
+              reject(new Error(`音频播放失败: ${error.errMsg}`));
+            });
+            
+            audioContext.play();
+          },
+          fail: (error) => {
+            console.error(`第${currentBlockIndex + 1}个音频块保存失败:`, error);
+            reject(error);
+          }
+        });
+      }
+      
+      // 开始播放第一个块
+      playNextBlock.call(this);
+    });
+  },
+
+  // 播放音频
+  playAudio(audioPath) {
+    // 先清理可能存在的音频上下文
+    this.cleanupAudioContext();
+    
+    // 创建新的音频上下文
+    const audioContext = wx.createInnerAudioContext();
+    audioContext.src = audioPath;
+    
+    audioContext.onPlay(() => {
+      console.log('开始播放音频');
+    });
+
+    audioContext.onEnded(() => {
+      console.log('音频播放结束');
+      this.setData({ isPlaying: false });
+      this.cleanupAudioContext();
+    });
+
+    audioContext.onError((error) => {
+      console.error('音频播放错误:', error);
+      this.setData({ isPlaying: false });
+      wx.showToast({
+        title: `音频播放失败: ${error.errMsg}`,
+        icon: 'none'
+      });
+      this.cleanupAudioContext();
+    });
+
+    // 增加播放进度监听，帮助调试
+    audioContext.onTimeUpdate(() => {
+      // 每5秒记录一次播放进度
+      if (Math.floor(audioContext.currentTime) % 5 === 0 && !this.lastProgressLog || 
+          Math.floor(audioContext.currentTime) > this.lastProgressLog + 5) {
+        console.log(`当前播放进度: ${audioContext.currentTime.toFixed(1)}s / ${audioContext.duration ? audioContext.duration.toFixed(1) : '未知'}s`);
+        this.lastProgressLog = Math.floor(audioContext.currentTime);
+      }
+    });
+
+    audioContext.play();
+    this.audioContext = audioContext;
+    this.lastProgressLog = 0;
+  },
+
+  // 清理音频资源的通用方法
+  cleanupAudioContext() {
+    // 清理单个音频上下文
+    if (this.audioContext) {
+      try {
+        // 检查audioContext是否已被销毁
+        if (this.audioContext.paused !== undefined) {
+          this.audioContext.stop();
+        }
+        this.audioContext.destroy();
+      } catch (error) {
+        console.warn('清理单个音频上下文时出错:', error);
+      } finally {
+        this.audioContext = null;
+        this.lastProgressLog = null;
+      }
+    }
+    
+    // 清理音频上下文数组（用于playAudioBlocksWithControl方法）
+    if (this.audioContexts && Array.isArray(this.audioContexts)) {
+      this.audioContexts.forEach(audioContext => {
+        try {
+          if (audioContext && audioContext.paused !== undefined) {
+            audioContext.stop();
+            audioContext.destroy();
+          }
+        } catch (error) {
+          console.warn('清理音频上下文数组中的项时出错:', error);
+        }
+      });
+      this.audioContexts = null;
+    }
+  },
+
+  // 停止音频播放
+  stopAudio() {
+    // 首先设置isPlaying为false，这样播放队列中的下一个音频块就不会继续播放
+    this.setData({ isPlaying: false });
+    
+    // 清理所有音频上下文
+    this.cleanupAudioContext();
+    
+    wx.showToast({
+      title: '停止播放',
+      icon: 'none'
+    });
+  },
+
+  // 返回
+  goBack() {
+    wx.navigateBack();
+  },
+
+  // 触摸开始
+  onTouchStart(e) {
+    if (this.data.showSettings) return;
+    this.setData({
+      touchStartX: e.touches[0].pageX,
+      touchStartY: e.touches[0].pageY
+    });
+  },
+
+  // 触摸结束
+  onTouchEnd(e) {
+    if (this.data.showSettings) return;
+    
+    const touchEndX = e.changedTouches[0].pageX;
+    const touchEndY = e.changedTouches[0].pageY;
+    const deltaX = touchEndX - this.data.touchStartX;
+    const deltaY = Math.abs(touchEndY - this.data.touchStartY);
+    
+    // 判断是否为水平滑动
+    if (Math.abs(deltaX) > 50 && deltaY < 50) {
+      if (deltaX > 0) {
+        // 向右滑动 - 上一页
+        this.prevPage();
+      } else {
+        // 向左滑动 - 下一页
+        this.nextPage();
+      }
+    } else if (Math.abs(deltaX) < 30 && deltaY < 30) {
+      // 点击屏幕中间区域显示/隐藏导航栏
+      const windowWidth = wx.getSystemInfoSync().windowWidth;
+      const tapX = e.changedTouches[0].pageX;
+      
+      if (tapX > windowWidth * 0.3 && tapX < windowWidth * 0.7) {
+        this.toggleNav();
+      }
+    }
+  },
+
+  // 切换导航栏显示
+  toggleNav() {
+    this.setData({
+      showNav: !this.data.showNav
+    });
+  },
+
+  // 更新内容样式
+  updateContentStyle() {
+    const { brightness } = this.data;
+    const filter = `brightness(${brightness}%)`;
+    this.setData({
+      contentStyle: `filter: ${filter};`
+    });
+  },
+
+  // 翻页动画
+  performPageFlip(direction, targetPage) {
+    if (this.data.flipMode === 'none') {
+      this.setData({ currentPage: targetPage });
+      return;
+    }
+
+    const flipPageIndex = this.data.currentPage;
+    const nextPageIndex = targetPage;
+    
+    this.setData({
+      isFlipping: true,
+      flipPageIndex: flipPageIndex,
+      nextPageIndex: nextPageIndex,
+      flipAnimation: direction === 'next' ? 'flip-right' : 'flip-left'
+    });
+
+    setTimeout(() => {
+      this.setData({
+        currentPage: targetPage,
+        isFlipping: false,
+        flipAnimation: ''
+      });
+    }, 600);
+  },
+
+  // 下一页
+  nextPage() {
+    if (this.data.currentPage < this.data.pages.length - 1) {
+      const targetPage = this.data.currentPage + 1;
+      
+      if (this.data.flipMode === 'simulation') {
+        this.performPageFlip('next', targetPage);
+      } else if (this.data.flipMode === 'slide') {
+        this.setData({ flipAnimation: 'page-slide-left' });
+        setTimeout(() => {
+          this.setData({ 
+            currentPage: targetPage,
+            flipAnimation: '' 
+          });
+        }, 300);
+      } else if (this.data.flipMode === 'cover') {
+        this.setData({ flipAnimation: 'page-fade' });
+        setTimeout(() => {
+          this.setData({ 
+            currentPage: targetPage,
+            flipAnimation: '' 
+          });
+        }, 200);
+      } else {
+        this.setData({ currentPage: targetPage });
+      }
+    }
+  },
+
+  // 上一页
+  prevPage() {
+    if (this.data.currentPage > 0) {
+      const targetPage = this.data.currentPage - 1;
+      
+      if (this.data.flipMode === 'simulation') {
+        this.performPageFlip('prev', targetPage);
+      } else if (this.data.flipMode === 'slide') {
+        this.setData({ flipAnimation: 'page-slide-right' });
+        setTimeout(() => {
+          this.setData({ 
+            currentPage: targetPage,
+            flipAnimation: '' 
+          });
+        }, 300);
+      } else if (this.data.flipMode === 'cover') {
+        this.setData({ flipAnimation: 'page-fade' });
+        setTimeout(() => {
+          this.setData({ 
+            currentPage: targetPage,
+            flipAnimation: '' 
+          });
+        }, 200);
+      } else {
+        this.setData({ currentPage: targetPage });
+      }
+    }
+  },
+
+  // 进度条改变
+  onProgressChange(e) {
+    const percent = e.detail.value;
+    const targetPage = Math.round((percent / 100) * (this.data.pages.length - 1));
+    this.setData({ currentPage: targetPage });
+  },
+
+  // 设置相关方法
+  toggleSettings() {
+    this.setData({
+      showSettings: !this.data.showSettings
+    });
+  },
+
+  // 目录相关方法
+  toggleCatalog() {
+    this.setData({
+      showCatalog: !this.data.showCatalog
+    });
+  },
+
+  jumpToPage(e) {
+    const targetPage = e.currentTarget.dataset.index;
+    if (targetPage !== this.data.currentPage) {
+      this.setData({
+        currentPage: targetPage,
+        showCatalog: false
+      });
+    } else {
+      this.setData({
+        showCatalog: false
+      });
+    }
+  },
+
+  // 主题切换方法
+  toggleTheme() {
+    const newMode = !this.data.isDarkMode;
+    this.setData({
+      isDarkMode: newMode
+    });
+    
+    // 保存到缓存
+    wx.setStorageSync('isDarkMode', newMode);
+    
+    // 切换页面根元素的 class
+    if (newMode) {
+      // 夜间模式
+      wx.pageScrollTo({
+        scrollTop: 0,
+        duration: 0
+      });
+    }
+    
+    wx.showToast({
+      title: newMode ? '已切换到夜间模式' : '已切换到日间模式',
+      icon: 'none',
+      duration: 1000
+    });
+  },
+
+  onBrightnessChange(e) {
+    this.setData({ brightness: e.detail.value });
+    this.updateContentStyle();
+  },
+
+  onFontSizeChange(e) {
+    this.setData({ fontSize: e.detail.value });
+  },
+
+  onMarginChange(e) {
+    this.setData({ marginSize: e.detail.value });
+  },
+
+  onLineHeightChange(e) {
+    const value = e.detail.value;
+    this.setData({
+      lineHeightValue: value,
+      lineHeight: value / 10
+    });
+  },
+
+  changeFlipMode(e) {
+    this.setData({
+      flipMode: e.currentTarget.dataset.mode
+    });
+  },
+
+  changeFontFamily(e) {
+    this.setData({
+      fontFamily: e.currentTarget.dataset.font
+    });
+  },
+
+  onUnload() {
+    // 页面卸载时安全清理音频资源
+    this.cleanupAudioContext();
+  }
+});

@@ -1,0 +1,37 @@
+<view class="container">
+  <view class="chat-container">
+    <!-- 聊天消息列表 -->
+    <scroll-view class="messages-container scrollable" >
+      <view wx:for="{{messages}}" wx:key="index" class="message-item {{item.type}}-message">
+        <view wx:if="{{item.type === 'hero'}}" class="message-content hero-message">
+          <image class="avatar" src="{{heroImageUrl}}" mode="aspectFill"></image>
+          <view class="message-bubble hero-bubble">
+            <text class="message-text">{{item.content}}</text>
+            <text class="message-time">{{item.time}}</text>
+          </view>
+        </view>
+
+        <view wx:if="{{item.type === 'user'}}" class="message-content user-message">
+          <view class="message-bubble user-bubble">
+            <text class="message-text">{{item.content}}</text>
+            <text class="message-time">{{item.time}}</text>
+          </view>
+          <image class="avatar" src="{{userImageUrl}}" mode="aspectFill"></image>
+        </view>
+      </view>
+      
+      <view wx:if="{{isLoading}}" class="loading-message">
+        <image class="avatar" src="{{heroImageUrl}}" mode="aspectFill"></image>
+        <view class="message-bubble hero-bubble">
+          <text class="loading-text">{{heroName}}正在思考...</text>
+        </view>
+      </view>
+    </scroll-view>
+    
+    <!-- 输入框 -->
+    <view class="input-container">
+      <input class="message-input" placeholder="输入消息..." value="{{inputValue}}" bindinput="onInputChange" confirm-type="send" bindconfirm="sendMessage"></input>
+      <button class="send-btn" bindtap="sendMessage" disabled="{{isLoading}}">发送</button>
+    </view>
+  </view>
+</view>

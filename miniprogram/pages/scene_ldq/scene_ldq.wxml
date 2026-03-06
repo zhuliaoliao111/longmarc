@@ -1,0 +1,271 @@
+<view class="container">
+  <view class="script-container">
+    <!-- 背景页 -->
+    <view wx:if="{{currentStep === 0}}" class="scene1-container">
+      <image 
+        class="background-image1" 
+        src="{{backgroundImageUrl}}" 
+        mode="aspectFill"
+        lazy-load
+        bindtap="goNext"
+      ></image>
+      <view bindtap="goNext" class="content-wrapper">
+        <view class="title1">背景</view>
+        <view class="background-content">
+          <text class="paragraph">
+            {{ backgroundTypedText }}
+            <view class="cursor" wx:if="{{isTyping}}"></view>
+          </text>
+        </view>
+        <view class="actions1" wx:if="{{!isTyping}}">（点击任意处进入下一情景）</view>
+      </view>
+    </view>
+    
+    <!-- 场景页 -->
+    <view wx:else>
+      <!-- 场景1：安顺场的绝境 -->
+      <view wx:if="{{currentStep === 1}}" bindtap="handleScene1Click" class="scene-outer">
+        <view class="title">场景一：安顺场的绝境抉择</view>
+          <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>       
+          <view class="white-box">
+          <view class="content">
+            {{ scene1TypedText }}
+            <view class="cursor" wx:if="{{isScene1Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene1Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="此选择不切实际！安顺场渡口规模有限，3只木船单日最多渡千人，敌军3天内就会合围，集中兵力强攻不仅扩不了渡口，还会让红军错失转移时机，陷入绝境。请回溯重新决策！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">集中全部兵力强攻安顺场，扩大渡口规模</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="2"  
+              data-result="你的选择与军委决策一致！1935年5月26日18时，中革军委电令分兵两路夹河北上，左纵队奔袭泸定桥，右纵队牵制敌军，这一部署为红军开辟了生路，避免了被合围的命运。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">分兵两路沿大渡河岸北上，奔袭泸定桥开辟新通道</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="此选择会导致全军覆没！敌军已逼近，佯攻吸引不了多久注意力，主力从安顺场缓慢渡河至少需1个月，等不到渡完就会被敌军包围，完全违背战略转移的紧迫性。请回溯重新思考！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">C</view>
+              <view class="choice-text">派小部队佯攻吸引敌军，主力仍从安顺场缓慢渡河</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="南下等于自投罗网！大渡河南岸有川军重兵布防，红军南下会遭遇更多敌军阻击，不仅找不到新渡口，还会彻底陷入战略被动，失去北上与红四方面军会师的机会。请回溯重新权衡！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">D</view>
+              <view class="choice-text">沿大渡河南下，寻找其他可大规模渡河的渡口</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 场景2：生死竞速 -->
+      <view wx:if="{{currentStep === 2}}" bindtap="handleScene2Click" class="scene-outer">
+        <view class="title">场景二：奔袭泸定桥的竞速</view>
+        <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+        <view class="white-box">
+
+          <view class="content">
+            {{ scene2TypedText }}
+            <view class="cursor" wx:if="{{isScene2Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene2Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="3"  
+              data-result="你的决策契合实战！红四团当即决定：不埋锅造饭、不吃热食，遇敌猛打猛冲不恋战，昼夜奔袭240里，最终抢在川军前抵达泸定桥，为夺桥赢得关键时间，这就是“飞夺泸定桥”的速度奇迹。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">加快奔袭速度，抢在川军主力到达前夺桥</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="此选择会错失良机！沿途击溃据点至少需2天，而川军1天内就能到泸定桥，缓慢推进只会让敌军抢先占领桥面，红军奔袭计划将彻底失败，陷入进退两难的境地。请回溯重新判断！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">沿途击溃所有川军据点后，再缓慢向泸定桥推进</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="右纵队无法分兵！右纵队需牵制川军主力、保护后方，若分兵支援左纵队，自身防线会崩溃，反而让敌军有机可乘，导致两路部队都陷入危险。请回溯重新规划！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">C</view>
+              <view class="choice-text">请求右纵队分兵支援，合力阻击川军增援部队</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="绕路会彻底延误时间！绕路至少多走50里，需额外1天路程，川军会提前占领泸定桥并构筑防线，红军再想夺桥难如登天，奔袭的意义将完全丧失。请回溯重新考虑！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">D</view>
+              <view class="choice-text">绕路隐蔽行军，避开川军主力后再接近泸定桥</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 场景3：铁索寒 -->
+      <view wx:if="{{currentStep === 3}}" bindtap="handleScene3Click" class="scene-outer">
+        <view class="title">场景三：夺桥后的战略行动</view>
+        <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+        <view class="white-box">
+          <view class="content">
+            {{ scene3TypedText }}
+            <view class="cursor" wx:if="{{isScene3Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene3Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="固守等于自陷包围！敌军增援部队距泸定桥仅100里，24小时内就能赶到，固守等待集结会让红军被敌军合围，刚夺取的渡口将变成新的“安顺场”，陷入绝境。请回溯重新决策！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">固守泸定桥等待后续部队集结</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="4"  
+              data-result="你的决策符合实战部署！1935年5月29日22时，刘伯承抵达后立即下令：主力连夜过桥，后卫放火烧桥头工事阻敌，天亮前全军北移10里。这一行动让红军彻底脱离敌军合围范围，为后续会师扫清障碍。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">立即继续北上脱离敌军合围范围</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="休整会丧失主动权！敌军增援已在路上，哪怕休整1天，敌军也会追至泸定桥，红军将被迫与优势敌军决战，不仅补充不了弹药，还会消耗有生力量，违背“避实击虚”的战术原则。请回溯重新思考！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">C</view>
+              <view class="choice-text">就地休整补充弹药后再推进</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="分兵会分散战力！红军当前核心目标是北上会师，分兵控制周边渡口会占用大量兵力，导致北上主力薄弱，若遭遇敌军阻击会难以应对，且周边渡口并无战略价值，属于无效部署。请回溯重新权衡！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">D</view>
+              <view class="choice-text">分兵控制周边渡口，扩大渡河区域</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 场景4：右纵队的抉择 -->
+      <view wx:if="{{currentStep === 4}}" bindtap="handleScene4Click" class="scene-outer">
+        <view class="title">场景四：右纵队的应急方案</view>
+        <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+        <view class="white-box">
+          <view class="content">
+            {{ scene4TypedText }}
+            <view class="cursor" wx:if="{{isScene4Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene4Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="返回等于自投罗网！安顺场已被川军杨森部占领，沿途还有敌军设卡，右纵队原路返回会遭遇层层阻击，不仅无法与主力会合，还会被敌军围歼，完全违背突围初衷。请回溯重新决策！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">原路返回安顺场与主力会合</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="5"  
+              data-result="你的决策契合军委预案！1935年5月26日军委电文明确：“右路如不能会合，由刘、聂率部于川西独立开创局面，打游击、扩红，待机与主力会合。”这一预案为红军保留了有生力量，避免了部队被全歼的风险。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">在川西开辟新的根据地</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="川北路途艰险且敌军密布！从川西到川北需穿越多座雪山，沿途还有川军邓锡侯部重兵设防，右纵队孤军深入会面临缺粮、缺弹、缺补给的困境，大概率无法抵达川北，还会消耗殆尽。请回溯重新思考！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">C</view>
+              <view class="choice-text">转向川北与红四方面军会合</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="固守会被敌军围歼！右纵队仅有数千兵力，且弹药不足，固守东岸阵地会被川军主力包围，失去机动性后只能被动挨打，最终难逃被全歼的命运，违背“保存实力”的战略目标。请回溯重新权衡！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">D</view>
+              <view class="choice-text">固守大渡河东岸阵地等待援军</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 结局 -->
+      <view wx:if="{{currentStep === 5}}">
+        <view class="title1">最终结局</view>
+        <image class="background-image2" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+        <view class="content1" >
+          {{ resultTypedText }}
+          <view class="cursor" wx:if="{{isResultTyping}}"></view>
+        </view>
+        <button bindtap="goHome" class="return-btn" wx:if="{{!isResultTyping}}">返回首页</button>
+      </view>
+    </view>
+  </view>
+</view>

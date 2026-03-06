@@ -1,0 +1,152 @@
+<view class="container">
+  <view class="script-container">
+    <!-- 背景页 -->
+    <view wx:if="{{currentStep === 0}}" class="scene1-container">
+      <image 
+        class="background-image1" 
+        src="{{backgroundImageUrl}}" 
+        mode="aspectFill"
+        lazy-load
+        bindtap="goNext"
+      ></image>
+      <view bindtap="goNext" class="content-wrapper">
+        <view class="title1">背景</view>
+        <view class="background-content">
+          <text class="paragraph">
+            {{ backgroundTypedText }}
+            <view class="cursor" wx:if="{{isTyping}}"></view>
+          </text>
+        </view>
+        <view class="actions1" wx:if="{{!isTyping}}">（点击任意处进入下一情景）</view>
+      </view>
+    </view>
+    
+    <!-- 场景页 -->
+    <view wx:else>
+      <!-- 场景1：天险腊子口 -->
+      <view wx:if="{{currentStep === 1}}" bindtap="handleScene1Click" class="scene-outer">
+        <view class="title">场景一：天险腊子口的攻坚抉择</view>
+        <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+        <view class="white-box">
+          <view class="content">
+            {{ scene1TypedText }}
+            <view class="cursor" wx:if="{{isScene1Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene1Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="此选择正中敌军下怀！腊子口地形狭窄，敌军机枪火力交叉封锁，正面强攻会造成毁灭性伤亡，多次冲锋均告失败，天亮后敌军援军赶到，部队将陷入腹背受敌的绝境。请回溯重新决策！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">正面强攻：集中全团火力压制敌人，组织突击队强行冲过木桥</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="2"  
+              data-result="你的选择符合实战策略！团长采纳建议，正面部队佯攻吸引火力，同时挑选擅长攀爬的战士组成迂回部队。这一决策为突破腊子口奠定了关键基础，历史上红军正是靠此战术成功突破天险。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">侧翼迂回：派出小股部队攀登右侧悬崖峭壁，绕到敌军后方突袭</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 场景2：悬崖攀登的准备 -->
+      <view wx:if="{{currentStep === 2}}" bindtap="handleScene2Click" class="scene-outer">
+        <view class="title">场景二：悬崖攀登的装备抉择</view>
+        <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+        <view class="white-box">
+          <view class="content">
+            {{ scene2TypedText }}
+            <view class="cursor" wx:if="{{isScene2Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene2Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="3"  
+              data-result="你的选择符合历史细节！迂回部队携带绳索、铁钩和绑腿，在向导指引下找到平缓崖壁，利用夜色成功攀爬。这些装备为登上悬崖、突袭敌军提供了重要保障，是战术成功的关键。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">优先准备绳索和铁钩：确保攀爬时能固定身体，应对陡峭崖壁</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="此选择导致行动受阻！迂回部队因缺乏攀爬工具，在陡峭崖壁上多次滑落，延误时间且惊动敌军哨兵，暴露行动意图，最终无法完成迂回任务，正面强攻也将失败。请回溯重新权衡！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">优先准备武器弹药：确保迂回成功后能立即投入战斗，增强火力</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 场景3：总攻时机的选择 -->
+      <view wx:if="{{currentStep === 3}}" bindtap="handleScene3Click" class="scene-outer">
+        <view class="title">场景三：总攻时机的决策</view>
+        <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+        <view class="white-box">
+          <view class="content">
+            {{ scene3TypedText }}
+            <view class="cursor" wx:if="{{isScene3Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene3Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="4"  
+              data-result="你的选择抓住了关键战机！正面部队猛烈冲锋吸引敌军主力，迂回部队从悬崖上突然投掷手榴弹，敌军腹背受敌瞬间溃败。拂晓前，红军成功突破腊子口天险，为北上开辟了通道！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">立即发起总攻：正面与迂回部队同时行动，趁敌军尚未察觉侧翼威胁</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="此选择错失战机！正面部队后撤时被敌军察觉，敌军迅速调整部署加强侧翼防御，援军也加快速度。迂回部队发起攻击时已失去突然性，双方陷入僵持，最终红军被迫放弃腊子口，北上通道被切断。请回溯重新判断！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">等待迂回部队休整：让正面部队暂时后撤，待准备充分后再行动</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 结局 -->
+      <view wx:if="{{currentStep === 4}}">
+        <view class="title1">最终结局</view>
+        <image class="background-image2" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+        <view class="content1" >
+          {{ resultTypedText }}
+          <view class="cursor" wx:if="{{isResultTyping}}"></view>
+        </view>
+        <button bindtap="goHome" class="return-btn" wx:if="{{!isResultTyping}}">返回首页</button>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,152 @@
+<view class="container">
+  <view class="script-container">
+    <!-- 背景页 -->
+    <view wx:if="{{currentStep === 0}}" class="scene1-container">
+      <image 
+        class="background-image1" 
+        src="{{backgroundImageUrl}}" 
+        mode="aspectFill"
+        lazy-load
+        bindtap="goNext"
+      ></image>
+      <view bindtap="goNext" class="content-wrapper">
+        <view class="title1">背景</view>
+        <view class="background-content">
+          <text class="paragraph">
+            {{ backgroundTypedText }}
+            <view class="cursor" wx:if="{{isTyping}}"></view>
+          </text>
+        </view>
+        <view class="actions1" wx:if="{{!isTyping}}">（点击任意处进入下一情景）</view>
+      </view>
+    </view>
+    
+    <!-- 场景页 -->
+    <view wx:else>
+      <!-- 场景1：会议核心议题抉择 -->
+      <view wx:if="{{currentStep === 1}}" bindtap="handleScene1Click" class="scene-outer">
+        <view class="title">场景一：会议议题的核心定位</view>
+        <view class="white-box">
+          <image class="background-image" src="{{backgroundImageUrl}}" ></image>
+          <view class="content">
+            {{ scene1TypedText }}
+            <view class="cursor" wx:if="{{isScene1Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene1Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="你的判断未能抓住核心！物资匮乏确实是问题，但更深层的危机是军事指挥的错误——如果不纠正“左”倾路线，即使补充再多物资，也会在错误指挥下消耗殆尽。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">补充物资装备：建议会议重点讨论如何向当地群众征集粮食和弹药</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="2"  
+              data-result="你的判断切中要害！毛泽东赞许点头：“部队的眼睛是雪亮的，大家都看清了问题的根子。”这一意见为即将召开的会议明确了核心议题，为纠正“左”倾错误奠定了基础。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">纠正军事路线：建议会议重点检讨第五次反“围剿”以来的军事错误</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 场景2：领导机构改组决策 -->
+      <view wx:if="{{currentStep === 2}}" bindtap="handleScene2Click" class="scene-outer">
+        <view class="title">场景二：军事指挥权的重新确立</view>
+        <view class="white-box">
+          <image class="background-image" src="{{backgroundImageUrl}}" ></image>
+          <view class="content">
+            {{ scene2TypedText }}
+            <view class="cursor" wx:if="{{isScene2Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene2Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="你的建议存在妥协性！历史已经证明，博古、李德的错误指挥是导致红军被动的直接原因，不彻底纠正就无法扭转危局。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">主张维持现状：临阵换将不利军心，建议保留其指挥权并吸收毛泽东参与决策</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="3"  
+              data-result="你的发言得到多数同志赞同！会议最终通过了《中央关于反对敌人五次“围剿”的总结的决议》，肯定了毛泽东等同志的正确军事路线，为改组中央领导机构奠定了坚实基础。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">支持改组领导：列举多次指挥失误，建议撤销其指挥权，确立新领导核心</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 场景3：战略进军方向选择 -->
+      <view wx:if="{{currentStep === 3}}" bindtap="handleScene3Click" class="scene-outer">
+        <view class="title">场景三：红军进军方向的抉择</view>
+        <view class="white-box">
+          <image class="background-image" src="{{backgroundImageUrl}}" ></image>
+          <view class="content">
+            {{ scene3TypedText }}
+            <view class="cursor" wx:if="{{isScene3Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene3Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="你的建议未考虑实际变化！此时国民党军已在长江沿岸布下重兵，继续北上必然陷入重围。灵活机动是红军的重要战术原则，新领导集体的高明之处正在于审时度势。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">继续北上：坚持原定计划，从遵义向北突破长江，与红四方面军汇合</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="4"  
+              data-result="你的建议与新领导集体的决策不谋而合！这一灵活机动的战略部署，充分体现了实事求是、因地制宜的作战思想，为后来四渡赤水、巧渡金沙江等战例奠定了重要基础。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">四渡赤水：借贵州敌军薄弱，先机动川黔边境寻机调动敌人，再相机北渡长江</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 结局 -->
+      <view wx:if="{{currentStep === 4}}">
+        <view class="title1">最终结局</view>
+        <image class="background-image2" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+        <view class="content1" >
+          {{ resultTypedText }}
+          <view class="cursor" wx:if="{{isResultTyping}}"></view>
+        </view>
+        <button bindtap="goHome" class="return-btn" wx:if="{{!isResultTyping}}">返回首页</button>
+      </view>
+    </view>
+  </view>
+</view>

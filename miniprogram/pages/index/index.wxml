@@ -1,0 +1,362 @@
+<view class="container">
+  <image src="{{backgroundImageUrl}}" class="bg-image"></image>
+<!-- 顶部栏 -->
+  <view class="header">
+    <view class="header-left">
+      <view class="logo">
+        <text class="logo-text">长征云迹</text>
+        <text class="logo-en">CLOUD LONG MARCH</text>
+      </view>
+    </view>
+       <view class="header-right">
+         <icon type="more" size="20" color="#333"></icon>
+         <view class="avatar-container" bindtap="navigateToLogin">
+        <image
+          wx:if="{{isLoggedIn}}"
+          class="user-avatar"
+          src="{{processedAvatarUrl}}"
+          mode="aspectFill"
+          binderror="onAvatarLoadError"
+        ></image>
+        <view wx:else class="login-placeholder">
+          <image src="{{userIconUrl}}" class="login-image" ></image>
+        </view>
+      </view>
+    </view>
+  </view>
+
+<!-- 轮播图 -->
+  <view class="banner-section">
+    <swiper class="banner-swiper" indicator-dots="{{true}}" autoplay="{{true}}" interval="3000" duration="500">
+      <swiper-item>
+        <view class="banner-item">
+          <view class="banner-image-container">
+            <image 
+              src="{{rujinImageUrl}}" 
+              class="banner-image" 
+              mode="widthFix"
+              style="transform: translateY(-42%);"
+            ></image>
+          </view>
+          <view class="banner-overlay">
+            <view class="banner-title">瑞金出发</view>
+            <view class="banner-tagline">/ 历史转折点，革命新起点 /</view>
+          </view>
+        </view>
+      </swiper-item>
+      <swiper-item>
+        <view class="banner-item">
+          <view class="banner-image-container">
+            <image 
+              src="{{xiangjiangImageUrl}}" 
+              class="banner-image" 
+              mode="widthFix"
+              style="transform: translateY(-10%);"
+            ></image>
+          </view>
+          <view class="banner-overlay">
+            <view class="banner-title">湘江战役</view>
+            <view class="banner-tagline">/ 血染湘江铸忠魂，星火不灭志更坚 /</view>
+          </view>
+        </view>
+      </swiper-item>
+      <swiper-item>
+        <view class="banner-item">
+          <view class="banner-image-container">
+            <image 
+              src="{{zunyiImageUrl}}" 
+              class="banner-image" 
+              mode="widthFix"
+              style="transform: translateY(0%);"
+            ></image>
+          </view>
+          <view class="banner-overlay">
+            <view class="banner-title">遵义会议</view>
+            <view class="banner-tagline">/ 力挽狂澜定航向，革命转折开新章 /</view>
+          </view>
+        </view>
+      </swiper-item>
+      <swiper-item>
+        <view class="banner-item">
+          <view class="banner-image-container">
+            <image 
+              src="{{siduImageUrl}}" 
+              class="banner-image" 
+              mode="widthFix"
+              style="transform: translateY(-20%);"
+            ></image>
+          </view>
+          <view class="banner-overlay">
+            <view class="banner-title">四渡赤水</view>
+            <view class="banner-tagline">/ 机动灵活破重围，军事智慧照古今 /</view>
+          </view>
+        </view>
+      </swiper-item>
+      <swiper-item>
+        <view class="banner-item">
+          <view class="banner-image-container">
+            <image 
+              src="{{qiangduImageUrl}}" 
+              class="banner-image" 
+              mode="widthFix"
+              style="transform: translateY(-30%);"
+            ></image>
+          </view>
+          <view class="banner-overlay">
+            <view class="banner-title">强渡大渡河</view>
+            <view class="banner-tagline">/ 惊涛骇浪勇争先，英雄气魄贯云天 /</view>
+          </view>
+        </view>
+      </swiper-item>
+      <swiper-item>
+        <view class="banner-item">
+          <view class="banner-image-container">
+            <image 
+              src="{{ludingImageUrl}}" 
+              class="banner-image" 
+              mode="widthFix"
+              style="transform: translateY(0%);"
+            ></image>
+          </view>
+          <view class="banner-overlay">
+            <view class="banner-title">飞夺泸定桥</view>
+            <view class="banner-tagline">/ 铁索热血映丹心，勇士壮举励后人 /</view>
+          </view>
+        </view>
+      </swiper-item>
+      <swiper-item>
+        <view class="banner-item">
+          <view class="banner-image-container">
+            <image 
+              src="{{jiajinImageUrl}}" 
+              class="banner-image" 
+              mode="widthFix"
+              style="transform: translateY(-30%);"
+            ></image>
+          </view>
+          <view class="banner-overlay">
+            <view class="banner-title">翻越夹金山</view>
+            <view class="banner-tagline">/ 雪山低头迎英雄，信念如磐越天险 /</view>
+          </view>
+        </view>
+      </swiper-item>
+      <swiper-item>
+        <view class="banner-item">
+          <view class="banner-image-container">
+            <image 
+              src="{{laziImageUrl}}" 
+              class="banner-image" 
+              mode="widthFix"
+              style="transform: translateY(-25%);"
+            ></image>
+          </view>
+          <view class="banner-overlay">
+            <view class="banner-title">腊子口战役</view>
+            <view class="banner-tagline">/ 天险腊子口勇夺，打开北上胜利路 /</view>
+          </view>
+        </view>
+      </swiper-item>
+      <swiper-item>
+        <view class="banner-item">
+          <view class="banner-image-container">
+            <image 
+              src="{{huiningImageUrl}}" 
+              class="banner-image" 
+              mode="widthFix"
+              style="transform: translateY(0%);"
+            ></image>
+          </view>
+          <view class="banner-overlay">
+            <view class="banner-title">会宁会师</view>
+            <view class="banner-tagline">/ 三大主力胜利合，长征精神永铭刻 /</view>
+          </view>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+  <view style="height: 30rpx;"></view>
+  <!-- 分类图标区域 -->
+  <view class="category-section">
+    <view class="category-item" bindtap="navigateToDialog">
+      <view class="category-icon">
+        <image 
+          src="{{dialogIconUrl}}"  
+          mode="widthFix" 
+          class="icon-image"
+        ></image>
+      </view>
+      <text class="category-text">与战士对话</text>
+    </view>
+    <view class="category-item" bindtap="navigateToObject">
+      <view class="category-icon1"><image 
+          src="{{relicIconUrl}}"  
+          mode="widthFix" 
+          class="icon-image"
+        ></image>
+      </view>
+      <text class="category-text">文物讲长征</text>
+    </view>
+    <view class="category-item" bindtap="navigateToVoice">
+      <view class="category-icon1"><image 
+          src="{{diaryIconUrl}}"  
+          mode="widthFix" 
+          class="icon-image"
+        ></image>
+      </view>
+      <text class="category-text">长征回忆录</text>
+    </view>
+    <view class="category-item" bindtap="navigateToChallenge">
+      <view class="category-icon"><image 
+          src="{{paintIconUrl}}"  
+          mode="widthFix" 
+          class="icon-image"
+        ></image>
+      </view>
+      <text class="category-text">诗词绘长征</text>
+    </view>
+  </view>
+
+<!-- 地图区域 -->
+<view class="card-section">
+    <view class="one-card"bindtap="goCard">
+      <view class="card-bg">
+        <image src="{{mapIconUrl}}" class="card-bg-image" ></image>
+      </view>
+      <view class="card-right">
+        <view class="card-title">长征景忆重燃</view>
+        <text class="card-text">点击此处开启长征探索之旅</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 标签页区域 -->
+  <view class="tab-section">
+    <view class="main-tabs">
+      <view class="tab-item {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-tab="0">
+        出发与突围
+      </view>
+      <view class="tab-item {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-tab="1">
+        转折与机动
+      </view>
+      <view class="tab-item {{currentTab === 2 ? 'active' : ''}}" bindtap="switchTab" data-tab="2">
+        飞夺天险
+      </view>
+      <view class="tab-item {{currentTab === 3 ? 'active' : ''}}" bindtap="switchTab" data-tab="3">
+        胜利会师
+      </view>
+    </view>
+  </view>
+   <!-- 内容卡片区域 -->
+  <view class="content-section">
+    <view class="content-grid">
+      <!-- 内容1-->
+      <view class="content-card" bindtap="navigateToScene" data-scene="rj" wx:if="{{currentTab === 0}}">
+        <view class="content-image-container">
+          <image
+          src="{{rujinImageUrl}}"
+          class="content-image"
+          mode="widthFix"
+          style="transform: translateY(-42%);"
+          ></image>
+        </view>
+        <view class="content-info">
+          <text class="content-title">瑞金出发</text>
+        </view>
+      </view>
+      <view class="content-card" bindtap="navigateToScene" data-scene="xj" wx:if="{{currentTab === 0}}">
+        <view class="content-image-container">
+          <image
+          src="{{xiangjiangImageUrl}}"
+          class="content-image"
+          mode="widthFix"
+          style="transform: translateY(-10%);"
+          ></image>
+        </view>
+        <view class="content-info">
+          <text class="content-title">湘江战役</text>
+        </view>
+      </view>
+      <!-- 内容2-->
+      <view class="content-card" bindtap="navigateToScene" data-scene="zy" wx:if="{{currentTab === 1}}">
+        <view class="content-image-container">
+          <image
+          src="{{zunyiImageUrl}}"
+          class="content-image"
+          mode="widthFix"
+          style="transform: translateY(0%);"
+          ></image>
+        </view>
+        <view class="content-info">
+          <text class="content-title">遵义会议</text>
+        </view>
+      </view>
+      <view class="content-card" bindtap="navigateToScene" data-scene="sdcs" wx:if="{{currentTab === 1}}">
+        <view class="content-image-container">
+          <image
+          src="{{siduImageUrl}}"
+          class="content-image"
+          mode="widthFix"
+          style="transform: translateY(-20%);"
+          ></image>
+        </view>
+        <view class="content-info">
+          <text class="content-title">四渡赤水</text>
+        </view>
+      </view>
+      <!-- 内容3-->
+      <view class="content-card" bindtap="navigateToScene" data-scene="ddh" wx:if="{{currentTab === 2}}">
+        <view class="content-image-container">
+          <image     
+          src="{{qiangduImageUrl}}" 
+          class="content-image" 
+          mode="widthFix"
+          style="transform: translateY(-30%);"
+          ></image>
+        </view>
+        <view class="content-info">
+          <text class="content-title">强渡大渡河</text>
+        </view>
+      </view>
+      <view class="content-card" bindtap="navigateToScene" data-scene="ldq" wx:if="{{currentTab === 2}}">
+        <view class="content-image-container">
+          <image     
+          src="{{ludingImageUrl}}" 
+          class="content-image" 
+          mode="widthFix"
+          style="transform: translateY(0%);"
+          ></image>
+        </view>
+        <view class="content-info">
+          <text class="content-title">飞夺泸定桥</text>
+        </view>
+      </view>
+      <!-- 内容4-->
+      <view class="content-card" bindtap="navigateToScene" data-scene="lzk" wx:if="{{currentTab === 3}}">
+        <view class="content-image-container">
+          <image     
+          src="{{laziImageUrl}}" 
+          class="content-image" 
+          mode="widthFix"
+          style="transform: translateY(-25%);"
+          ></image>
+        </view>
+        <view class="content-info">
+          <text class="content-title">腊子口战役</text>
+        </view>
+      </view>
+      <view class="content-card" bindtap="navigateToScene" data-scene="hn" wx:if="{{currentTab === 3}}">
+        <view class="content-image-container">
+          <image     
+          src="{{huiningImageUrl}}" 
+          class="content-image" 
+          mode="widthFix"
+          style="transform: translateY(0%);"
+          ></image>
+        </view>
+        <view class="content-info">
+          <text class="content-title">会宁会师</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,154 @@
+<view class="container">
+  <view class="script-container">
+    <!-- 背景页 -->
+    <view wx:if="{{currentStep === 0}}" class="scene1-container">
+      <image 
+        class="background-image1" 
+        src="{{backgroundImageUrl}}" 
+        mode="aspectFill"
+        lazy-load
+        bindtap="goNext"
+      ></image>
+      <view bindtap="goNext" class="content-wrapper">
+        <view class="title1">背景</view>
+        <view class="background-content">
+          <text class="paragraph">
+            {{ backgroundTypedText }}
+            <view class="cursor" wx:if="{{isTyping}}"></view>
+          </text>
+        </view>
+        <view class="actions1" wx:if="{{!isTyping}}">（点击任意处进入下一情景）</view>
+      </view>
+    </view>
+    
+    <!-- 场景页 -->
+    <view wx:else>
+      <!-- 场景1：生死突击 -->
+      <view wx:if="{{currentStep === 1}}" bindtap="handleScene1Click" class="scene-outer">
+        <view class="title">场景一：生死突击的抉择</view>
+        <view class="white-box">
+          <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+          <view class="content">
+            {{ scene1TypedText }}
+            <view class="cursor" wx:if="{{isScene1Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene1Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="此选择将导致功亏一篑！敌军居高临下占据优势地形，突击队刚登岸立足未稳，固守滩头会被敌军反扑压回河中，失去渡河的最佳时机。请回溯重新决策！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">固守滩头，等待第二船增援</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="2"  
+              data-result="你的选择拯救了红军！孙继先立即下令：'登岸就冲锋，一步不停！'赵章成两炮精准命中敌军碉堡，勇士们趁势猛攻，成功夺取阵地，为后续部队渡河打开了通道。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">立即向纵深冲锋，夺取碉堡和制高点</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="原地防御难以坚持！敌军反扑凶猛且兵力占优，突击队缺乏工事掩护，原地构筑工事只会被动挨打，最终被迫后撤，渡河行动将彻底失败。请回溯重新思考！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">C</view>
+              <view class="choice-text">原地构筑工事，组织火力防御</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="分兵会导致两路皆弱！突击队仅有9人，兵力本就有限，分兵攻碉堡和搜船只将分散战斗力，既无法攻克碉堡，也难以找到船只，最终陷入绝境。请回溯重新权衡！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">D</view>
+              <view class="choice-text">分兵两路，一路攻碉堡，一路搜索船只</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 场景2：巩固渡口 -->
+      <view wx:if="{{currentStep === 2}}" bindtap="handleScene2Click" class="scene-outer">
+        <view class="title">场景二：巩固渡口的部署</view>
+        <view class="white-box">
+          <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+          <view class="content">
+            {{ scene2TypedText }}
+            <view class="cursor" wx:if="{{isScene2Typing}}"></view>
+          </view>
+          
+          <view class="choices" wx:if="{{!showResult && !isScene2Typing}}">
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="只搜船不控高地等于自陷险境！敌军仍占据山腰制高点，随时可俯冲攻击渡口，即使找到更多船只，渡河部队也会遭敌军火力打击，渡口终将失守。请回溯重新部署！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">A</view>
+              <view class="choice-text">立即派兵搜索更多船只，加快渡河速度</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="3"  
+              data-result="你的部署确保了渡河安全！红一营迅速攻占制高点，架枪封锁河面道路，形成环形防御阵地，既挡住了反扑，又保障了主力顺利渡河，完美实现了“以点控面”的战术目标。"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">B</view>
+              <view class="choice-text">分兵控制渡口高地，构建环形防御阵地</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="敌后破坏短期内难以见效！渡口高地是当前核心防线，若不及时控制，敌军随时可能反扑抢占，而敌后破坏需要时间且效果不确定，无法解决眼前危机。请回溯重新判断！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">C</view>
+              <view class="choice-text">派小队深入敌后，破坏延缓敌军增援</view>
+            </view>
+            <view 
+              class="choice-item" 
+              catchtap="handleChoice" 
+              data-nextstep="-1"  
+              data-result="只守南岸等于放弃主动权！北岸高地仍被敌军控制，敌军可居高临下威胁渡口，仅守南岸无法保障渡河部队安全，主力部队渡河时仍会遭猛烈打击。请回溯重新规划！"
+              hover-class="choice-hover"
+            >
+              <view class="choice-letter">D</view>
+              <view class="choice-text">在南岸构筑工事，准备迎击敌军反扑</view>
+            </view>
+          </view>
+          
+          <view class="result" wx:if="{{showResult}}">{{resultText}}</view>
+          <view class="actions1" wx:if="{{showResult}}">（点击任意处继续）</view>
+        </view>
+      </view>
+      
+      <!-- 结局 -->
+      <view wx:if="{{currentStep === 3}}">
+        <view class="title1">最终结局</view>
+        <image class="background-image2" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+        <view class="content1" >
+          {{ resultTypedText }}
+          <view class="cursor" wx:if="{{isResultTyping}}"></view>
+        </view>
+        <button bindtap="goHome" class="return-btn" wx:if="{{!isResultTyping}}">返回首页</button>
+      </view>
+    </view>
+  </view>
+</view>

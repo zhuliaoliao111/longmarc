@@ -1,0 +1,16 @@
+<view class="content-section" wx:if="{{artifacts && artifacts.length > 0}}">
+    <view class="content-grid">
+      <view
+        class="content-card"
+        wx:for="{{artifacts}}"
+        wx:key="id"
+        bindtap="navigateToObject"
+        data-page="{{item.page}}"
+      >
+        <image src="{{item.imageUrl}}" class="content-image" mode="aspectFill"></image>
+        <view class="content-name">
+          <text class="content-title">{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
