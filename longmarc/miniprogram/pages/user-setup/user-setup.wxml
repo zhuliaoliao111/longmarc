@@ -1,0 +1,36 @@
+<view class="container" data-weui-theme="{{theme}}">
+  <!-- 背景图片区域 -->
+  <view class="header-background">
+    <image class="background-img" src="{{backgroundImgUrl}}" mode="aspectFit"></image>
+  </view>
+
+  <!-- 白色卡片内容区域 -->
+  <view class="content-card">
+
+    <!-- 头像设置 -->
+    <view class="avatar-section">
+      <view class="section-title">头像设置</view>
+      <button class="avatar-wrapper" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        <image class="avatar" src="{{avatarUrl}}"></image>
+      </button>
+      <view class="avatar-desc">点击头像选择新的头像</view>
+    </view>
+
+    <!-- 昵称设置 -->
+    <form catchsubmit="formSubmit">
+      <view class="nickname-section">
+        <view class="section-title">昵称设置</view>
+        <view class="row">
+          <view class="text1">昵称：</view>
+          <input type="nickname" class="weui-input" name="nickname" placeholder="请输入昵称" maxlength="20"/>
+        </view>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="button-section">
+        <button class="submit-btn" form-type="submit">完成设置</button>
+        <button class="skip-btn" bindtap="skipSetup">跳过设置</button>
+      </view>
+    </form>
+  </view>
+</view>

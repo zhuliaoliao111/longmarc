@@ -1,0 +1,48 @@
+<!--pages/login/login.wxml-->
+<view class="container">
+  <!-- 背景图片 -->
+  <image class="background-image" src="{{backgroundImageUrl}}" mode="aspectFill"></image>
+  
+  <!-- 欢迎文字 - 金色 -->
+  <view class="welcome-text">
+    <text class="welcome-title">欢迎登录云上长征</text>
+    <text class="welcome-subtitle">重温红色历史，传承长征精神</text>
+  </view>
+
+  <!-- 白色卡片 -->
+  <view class="login-card">
+    <!-- 微信一键登录按钮 -->
+    <view class="login-section">
+      <view class="login-title">微信快速登录</view>
+
+      <button
+        class="login-btn wechat-btn"
+        open-type="getUserInfo"
+        bindgetuserinfo="onGetUserInfo">
+        <view class="btn-content">
+          <text class="btn-text">微信一键登录</text>
+        </view>
+      </button>
+    </view>
+
+    <!-- 分割线 -->
+    <view class="divider">
+      <view class="divider-line"></view>
+      <text class="divider-text">或</text>
+      <view class="divider-line"></view>
+    </view>
+
+    <!-- 其他登录选项 -->
+    <view class="other-options">
+      <view class="option-item" bindtap="guestLogin">
+        <text class="option-text">游客登录</text>
+      </view>
+    </view>
+    
+    <!-- 协议说明 -->
+    <view class="agreement">
+      <text class="agreement-text"> 登录即表示您同意<text class="agreement-link" bindtap="showPrivacyPolicy">《隐私政策》</text>和<text class="agreement-link" bindtap="showUserAgreement">《用户协议》</text>
+      </text>
+    </view>
+  </view>
+</view>

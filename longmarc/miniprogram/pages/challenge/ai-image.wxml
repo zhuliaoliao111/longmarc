@@ -1,0 +1,130 @@
+<view class="container">
+  <!-- 返回按钮 -->
+  <view class="back-btn" bindtap="goBack">
+    <text class="back-icon">‹</text>
+  </view>
+
+  <!-- 主标题区域 -->
+  <view class="title-section">
+    <view class="main-title">共绘你的长征画卷</view>
+    <view class="subtitle">以今之技，绘昔之魂</view>
+  </view>
+
+  <!-- 输入框 -->
+  <view class="input-section">
+    <textarea 
+      class="prompt-input" 
+      placeholder="请输入文字帮您创作图片"
+      value="{{inputText}}"
+      bindinput="onTextInput"
+      maxlength="200"
+      show-confirm-bar="{{false}}"
+      cursor-spacing="0"
+    ></textarea>
+  </view>
+
+  <!-- 开始创作按钮 -->
+  <view class="create-btn-section">
+    <button 
+      class="create-btn {{isGenerating ? 'generating' : ''}}"
+      bindtap="startCreation"
+      disabled="{{isGenerating}}"
+    >
+      {{isGenerating ? '创作中...' : '开始创作'}}
+    </button>
+  </view>
+
+  <!-- 推荐风格 -->
+  <view class="style-section">
+    <view class="style-label">推荐风格:</view>
+    <view class="style-buttons">
+      <view 
+        class="style-btn {{selectedStyle === 'revolutionary_illustration' ? 'active' : ''}}"
+        bindtap="selectStyle"
+        data-style="revolutionary_illustration"
+      >
+        革命历史插画
+      </view>
+      <view 
+        class="style-btn {{selectedStyle === 'red_theme_print' ? 'active' : ''}}"
+        bindtap="selectStyle"
+        data-style="red_theme_print"
+      >
+        红色主题版画
+      </view>
+      <view 
+        class="style-btn {{selectedStyle === 'revolutionary_print' ? 'active' : ''}}"
+        bindtap="selectStyle"
+        data-style="revolutionary_print"
+      >
+        革色主题版画
+      </view>
+      <view 
+        class="style-btn {{selectedStyle === 'route_drawing' ? 'active' : ''}}"
+        bindtap="selectStyle"
+        data-style="route_drawing"
+      >
+        长征路线图绘
+      </view>
+      <view 
+        class="style-btn {{selectedStyle === 'military_watercolor' ? 'active' : ''}}"
+        bindtap="selectStyle"
+        data-style="military_watercolor"
+      >
+        军民鱼水情水彩
+      </view>
+      <view 
+        class="style-btn {{selectedStyle === 'historical_oil' ? 'active' : ''}}"
+        bindtap="selectStyle"
+        data-style="historical_oil"
+      >
+        历史场景油画
+      </view>
+      <view 
+        class="style-btn {{selectedStyle === 'red_memory_sketch' ? 'active' : ''}}"
+        bindtap="selectStyle"
+        data-style="red_memory_sketch"
+      >
+        红色记忆素描
+      </view>
+    </view>
+  </view>
+
+  <!-- 生成图片区域 -->
+  <view class="result-section" wx:if="{{generatedImage}}">
+    <view class="result-label">生成图片:</view>
+    <view class="result-image-container">
+      <image 
+        class="result-image" 
+        src="{{generatedImage}}" 
+        mode="aspectFit"
+        bindload="onImageLoad"
+        binderror="onImageError"
+      ></image>
+    </view>
+    <view class="result-actions">
+      <button class="action-btn save-btn" bindtap="saveImage">保存图片</button>
+      <button class="action-btn share-btn" bindtap="shareImage">分享</button>
+    </view>
+  </view>
+
+  <!-- 背景装饰 -->
+  <view class="background-decoration">
+    <image 
+      class="background-image"
+      src="{{backgroundImage}}"
+      mode="aspectFill"
+    ></image>
+    <view class="background-overlay"></view>
+  </view>
+
+
+  <!-- 加载遮罩 -->
+  <view class="loading-overlay" wx:if="{{isGenerating}}">
+    <view class="loading-content">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">AI正在创作中...</text>
+      <text class="loading-tip">请稍候，这可能需要10-30秒</text>
+    </view>
+  </view>
+</view>

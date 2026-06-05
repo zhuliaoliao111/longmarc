@@ -1,0 +1,150 @@
+<view class="container">
+  <!-- 返回按钮 -->
+  <view class="back-btn" bindtap="goBack">
+    <text class="back-icon">‹</text>
+  </view>
+
+  <!-- 背景装饰 -->
+  <view class="background-decoration">
+    <image 
+      class="background-image"
+      src="{{backgroundImage}}"
+      mode="aspectFill"
+    ></image>
+    <view class="background-overlay"></view>
+  </view>
+
+  <!-- 主标题 -->
+  <view class="main-title-section">
+    <view class="main-title">共铸你的长征记忆</view>
+    <view class="main-subtitle">铁流万里，AI生花</view>
+  </view>
+
+  <!-- 文本输入区域 -->
+  <view class="input-section">
+    <view class="input-label">请输入关键词或主题：</view>
+    <textarea 
+      class="text-input" 
+      placeholder="例如：长征、红军、雪山、草地、胜利..."
+      value="{{inputText}}"
+      bindinput="onTextInput"
+      maxlength="50"
+      auto-height
+    ></textarea>
+    <view class="input-counter">{{inputText.length}}/50</view>
+  </view>
+
+  <!-- 创作类型选择 -->
+  <view class="type-section">
+    <view class="type-label">创作类型:</view>
+    <view class="type-buttons">
+      <view 
+        class="type-btn {{selectedType === 'poetry' ? 'active' : ''}}"
+        bindtap="selectType"
+        data-type="poetry"
+      >
+        诗词创作
+      </view>
+      <view 
+        class="type-btn {{selectedType === 'prose' ? 'active' : ''}}"
+        bindtap="selectType"
+        data-type="prose"
+      >
+        散文创作
+      </view>
+      <view 
+        class="type-btn {{selectedType === 'story' ? 'active' : ''}}"
+        bindtap="selectType"
+        data-type="story"
+      >
+        故事创作
+      </view>
+    </view>
+  </view>
+
+  <!-- 风格选择 -->
+  <view class="style-section">
+    <view class="style-label">创作风格:</view>
+    <view class="style-buttons">
+      <view 
+        class="style-btn {{selectedStyle === 'classical' ? 'active' : ''}}"
+        bindtap="selectStyle"
+        data-style="classical"
+      >
+        古典风格
+      </view>
+      <view 
+        class="style-btn {{selectedStyle === 'modern' ? 'active' : ''}}"
+        bindtap="selectStyle"
+        data-style="modern"
+      >
+        现代风格
+      </view>
+      <view 
+        class="style-btn {{selectedStyle === 'heroic' ? 'active' : ''}}"
+        bindtap="selectStyle"
+        data-style="heroic"
+      >
+        豪迈风格
+      </view>
+    </view>
+  </view>
+
+  <!-- 开始创作按钮 -->
+  <button 
+    class="create-btn {{isGenerating ? 'generating' : ''}}"
+    bindtap="startCreation"
+    disabled="{{isGenerating}}"
+  >
+    {{isGenerating ? '创作中...' : '开始创作'}}
+  </button>
+
+  <!-- 生成结果 -->
+  <view class="result-section" wx:if="{{generatedText}}">
+    <view class="result-container">
+      <view class="result-title">创作结果</view>
+      <view class="result-content">{{generatedText}}</view>
+      <view class="result-info">
+        <text class="result-type">{{typeMap[selectedType]}} · {{styleMap[selectedStyle]}}</text>
+        <text class="result-time">{{generatedTime}}</text>
+      </view>
+    </view>
+    <view class="result-actions">
+      <button class="action-btn copy-btn" bindtap="copyText">复制文本</button>
+      <button class="action-btn share-btn" bindtap="shareText">分享</button>
+      <button class="action-btn regenerate-btn" bindtap="regenerateText">重新创作</button>
+    </view>
+  </view>
+
+  <!-- 历史记录 -->
+  <view class="history-section" wx:if="{{historyList.length > 0}}">
+    <view class="history-title">创作历史</view>
+    <scroll-view class="history-scroll" scroll-y="true">
+      <view class="history-list">
+        <view 
+          class="history-item" 
+          wx:for="{{historyList}}" 
+          wx:key="index"
+          bindtap="selectHistoryItem"
+          data-index="{{index}}"
+        >
+          <view class="history-content">{{item.content}}</view>
+          <view class="history-info">
+            <text class="history-type">{{item.type}} · {{item.style}}</text>
+            <text class="history-time">{{item.time}}</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 加载遮罩 -->
+  <view class="loading-overlay" wx:if="{{isGenerating}}">
+    <view class="loading-content">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">AI正在创作中...</text>
+      <text class="loading-tip">请稍候，这可能需要5-15秒</text>
+    </view>
+  </view>
+</view>
+

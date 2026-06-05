@@ -1,0 +1,211 @@
+<view class="reader-container {{isDarkMode ? 'dark-mode' : ''}}">
+  <!-- 自定义导航栏占位 -->
+  <view class="custom-nav-bar" style="height: calc({{statusBarHeight}}px + 44px);"></view>
+  
+  <!-- 主阅读区域 -->
+  <view class="book-page-wrapper" bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd">
+    <!-- 底层书页（下一页的预览） -->
+    <view class="book-page next-page-preview" style="{{contentStyle}}" wx:if="{{currentPage < pages.length - 1}}">
+      <view class="page-inner" style="padding: calc({{statusBarHeight}}px + 44px + 40rpx) {{marginSize}}rpx 40rpx {{marginSize}}rpx;">
+        <view class="page-header">
+          <text class="date" style="font-size: {{fontSize}}rpx;">{{pages[currentPage + 1].title}}</text>
+        </view>
+        <scroll-view class="page-content" scroll-y>
+          <text class="diary-text" style="font-size: {{fontSize}}rpx; line-height: {{lineHeight}}; font-family: {{fontFamily}};">
+            {{pages[currentPage + 1].content}}
+          </text>
+        </scroll-view>
+      </view>
+    </view>
+
+    <!-- 当前页 -->
+    <view class="book-page current-page {{flipAnimation}}" style="{{contentStyle}}{{currentPageTransform}}">
+      <view class="page-inner" style="padding: calc({{statusBarHeight}}px + 44px + 40rpx) {{marginSize}}rpx 40rpx {{marginSize}}rpx;">
+        <view class="page-header">
+          <text class="date" style="font-size: {{fontSize}}rpx;">{{pages[currentPage].title}}</text>
+        </view>
+        
+        <scroll-view class="page-content" scroll-y>
+          <text class="diary-text" style="font-size: {{fontSize}}rpx; line-height: {{lineHeight}}; font-family: {{fontFamily}};">
+            {{pages[currentPage].content}}
+          </text>
+        </scroll-view>
+        
+        <view class="page-footer">
+          <view class="page-number" style="font-size: {{fontSize - 6}}rpx;">第{{currentPage + 1}}页 / 共{{pages.length}}页</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 翻页效果层 - 仿真模式 -->
+    <view class="flip-page {{flipAnimation}}" wx:if="{{isFlipping && flipMode === 'simulation'}}" style="{{flipPageStyle}}">
+      <view class="flip-page-front">
+        <view class="page-inner" style="padding: calc({{statusBarHeight}}px + 44px + 40rpx) {{marginSize}}rpx 40rpx {{marginSize}}rpx;">
+          <view class="page-header">
+            <text class="date" style="font-size: {{fontSize}}rpx;">{{pages[flipPageIndex].title}}</text>
+          </view>
+          <scroll-view class="page-content" scroll-y>
+            <text class="diary-text" style="font-size: {{fontSize}}rpx; line-height: {{lineHeight}}; font-family: {{fontFamily}};">
+              {{pages[flipPageIndex].content}}
+            </text>
+          </scroll-view>
+        </view>
+      </view>
+      <view class="flip-page-back">
+        <view class="page-inner" style="padding: calc({{statusBarHeight}}px + 44px + 40rpx) {{marginSize}}rpx 40rpx {{marginSize}}rpx;">
+          <view class="page-header">
+            <text class="date" style="font-size: {{fontSize}}rpx;">{{pages[nextPageIndex].title}}</text>
+          </view>
+          <scroll-view class="page-content" scroll-y>
+            <text class="diary-text" style="font-size: {{fontSize}}rpx; line-height: {{lineHeight}}; font-family: {{fontFamily}};">
+              {{pages[nextPageIndex].content}}
+            </text>
+          </scroll-view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 顶部导航 -->
+  <view class="top-nav {{showNav ? 'show' : ''}}" style="padding-top: calc({{statusBarHeight}}px + 44px + 20rpx);" bindtap="toggleNav">
+    <view class="nav-left" bindtap="goBack" catchtap="goBack">
+      <text class="nav-icon">‹</text>
+      <text class="nav-text">返回</text>
+    </view>
+    <view class="nav-center">
+      <text class="nav-title">离开苏区上征途</text>
+    </view>
+    <view class="nav-right">
+      <!-- 主题切换按钮 -->
+      <image
+        class="theme-icon-btn"
+        src="{{isDarkMode ? sunIconUrl : moonIconUrl}}"
+        bindtap="toggleTheme"
+        catchtap="toggleTheme"
+      ></image>
+      <!-- 语音播放按钮 -->
+      <image
+        class="voice-icon-btn {{isPlaying ? 'playing' : ''}}"
+        src="{{voicePlayIconUrl}}"
+        bindtap="toggleVoice"
+        catchtap="toggleVoice"
+      ></image>
+    </view>
+  </view>
+
+  <!-- 底部工具栏 -->
+  <view class="bottom-nav {{showNav ? 'show' : ''}}" bindtap="toggleNav">
+    <view class="nav-item" bindtap="toggleSettings" catchtap="toggleSettings">
+      <image class="nav-icon-img" src="{{settingsIconUrl}}"></image>
+      <text class="nav-label">设置</text>
+    </view>
+    <view class="nav-item" bindtap="toggleCatalog" catchtap="toggleCatalog">
+      <image class="nav-icon-img" src="{{catalogIconUrl}}"></image>
+      <text class="nav-label">目录</text>
+    </view>
+    <view class="nav-progress">
+      <slider value="{{(currentPage / (pages.length - 1)) * 100}}" 
+              bindchange="onProgressChange" 
+              backgroundColor="rgba(255,255,255,0.3)" 
+              activeColor="#d4a574" 
+              block-size="20"/>
+    </view>
+  </view>
+
+  <!-- 设置面板 -->
+  <view class="settings-panel {{showSettings ? 'show' : ''}}">
+    <view class="settings-mask" bindtap="toggleSettings"></view>
+    <view class="settings-content">
+      <view class="settings-header">
+        <text class="settings-title">阅读设置</text>
+        <text class="settings-close" bindtap="toggleSettings">✕</text>
+      </view>
+
+      <!-- 亮度 -->
+      <view class="setting-item">
+        <text class="setting-label">亮度</text>
+        <slider class="setting-slider" value="{{brightness}}" min="30" max="100" 
+                bindchange="onBrightnessChange" backgroundColor="#404040" 
+                activeColor="#d4a574" block-size="24"/>
+      </view>
+
+      <!-- 字号 -->
+      <view class="setting-item">
+        <text class="setting-label">字号</text>
+        <slider class="setting-slider" value="{{fontSize}}" min="24" max="42" 
+                bindchange="onFontSizeChange" backgroundColor="#404040" 
+                activeColor="#d4a574" block-size="24" show-value/>
+      </view>
+
+      <!-- 间距 -->
+      <view class="setting-item">
+        <text class="setting-label">间距</text>
+        <view class="setting-double-slider">
+          <view class="slider-item">
+            <text class="slider-label">边距</text>
+            <slider class="setting-slider-small" value="{{marginSize}}" min="20" max="80" 
+                    bindchange="onMarginChange" backgroundColor="#404040" 
+                    activeColor="#d4a574" block-size="20"/>
+          </view>
+          <view class="slider-item">
+            <text class="slider-label">行距</text>
+            <slider class="setting-slider-small" value="{{lineHeightValue}}" min="15" max="30" 
+                    bindchange="onLineHeightChange" backgroundColor="#404040" 
+                    activeColor="#d4a574" block-size="20"/>
+          </view>
+        </view>
+      </view>
+
+      <!-- 翻页方式 -->
+      <view class="setting-item">
+        <text class="setting-label">翻页</text>
+        <view class="setting-options">
+          <view class="option-btn {{flipMode === 'simulation' ? 'active' : ''}}" 
+                bindtap="changeFlipMode" data-mode="simulation">仿真</view>
+          <view class="option-btn {{flipMode === 'cover' ? 'active' : ''}}" 
+                bindtap="changeFlipMode" data-mode="cover">覆盖</view>
+          <view class="option-btn {{flipMode === 'slide' ? 'active' : ''}}" 
+                bindtap="changeFlipMode" data-mode="slide">滑动</view>
+        </view>
+      </view>
+
+      <!-- 字体 -->
+      <view class="setting-item">
+        <text class="setting-label">字体</text>
+        <scroll-view class="font-options" scroll-x>
+          <view class="font-option {{fontFamily === item.value ? 'active' : ''}}" 
+                wx:for="{{fontList}}" wx:key="value"
+                bindtap="changeFontFamily" data-font="{{item.value}}">
+            <text style="font-family: {{item.value}};">{{item.name}}</text>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 目录面板 -->
+  <view class="catalog-panel {{showCatalog ? 'show' : ''}}">
+    <view class="catalog-mask" bindtap="toggleCatalog"></view>
+    <view class="catalog-content">
+      <view class="catalog-header">
+        <text class="catalog-title">目录</text>
+        <text class="catalog-close" bindtap="toggleCatalog">✕</text>
+      </view>
+      <scroll-view class="catalog-list" scroll-y>
+        <view 
+          class="catalog-item {{index === currentPage ? 'active' : ''}}"
+          wx:for="{{pages}}" 
+          wx:key="index"
+          bindtap="jumpToPage"
+          data-index="{{index}}"
+        >
+          <view class="catalog-item-number">{{index + 1}}</view>
+          <view class="catalog-item-content">
+            <text class="catalog-item-title">{{item.title}}</text>
+            <text class="catalog-item-preview">{{item.content.substring(0, 50)}}...</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>

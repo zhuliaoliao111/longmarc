@@ -1,0 +1,59 @@
+.content-section {
+  padding: 65rpx 20rpx 40rpx;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20rpx;
+}
+
+.content-card {
+  background: white;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+  height: 420rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-image {
+  flex: 1;
+  width: 100%;
+  height: 320rpx;
+}
+
+.content-name {
+  padding: 16rpx;
+  background: rgba(0, 0, 0, 0.324);
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  line-height: 1.2;
+  display: block;
+}
+
+/* 响应式调整 */
+@media (max-width: 750rpx) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .category-section {
+    flex-wrap: wrap;
+    gap: 20rpx;
+  }
+  
+  .category-item {
+    flex: 0 0 20%;
+  }
+}

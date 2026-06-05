@@ -1,0 +1,47 @@
+<view class="container">
+  <!-- 背景为空白，通过wxss设置 -->
+  <view class="script-container">
+    <!-- 剧本标题 -->
+    <view class="title">{{currentScene.title}}</view>
+   <!-- 背景图片 -->
+    <image class="background-image" src="{{currentBg}}" mode="aspectFill"></image>
+    <!-- 背景介绍 -->
+    <view class="background" wx:if="{{currentScene.background}}">
+      {{currentScene.background}}
+    </view>
+    
+    <!-- 当前剧情内容 -->
+    <view class="content">
+      {{currentScene.content}}
+    </view>
+    
+    <!-- 选择按钮组 -->
+    <view class="choices" wx:if="{{currentScene.choices && currentScene.choices.length > 0}}">
+      <view class="choice-item" wx:for="{{currentScene.choices}}" wx:key="index" 
+            bindtap="handleChoice" data-index="{{index}}">
+        <view class="choice-letter">{{item.letter}}</view>
+        <view class="choice-text">{{item.text}}</view>
+      </view>
+    </view>
+    
+    <!-- 结果提示 -->
+    <view class="result" wx:if="{{currentScene.result}}">
+      {{currentScene.result}}
+    </view>
+    
+    <!-- 操作按钮 -->
+    <view class="actions" wx:if="{{currentScene.showNext || currentScene.showBack}}">
+      <button wx:if="{{currentScene.showBack}}" bindtap="goBack" class="back-btn">
+        回到选择
+      </button>
+      <button wx:if="{{currentScene.showNext}}" bindtap="goNext" class="next-btn">
+        继续
+      </button>
+    </view>
+    
+    <!-- 结局页返回按钮 -->
+    <button wx:if="{{isEnding}}" bindtap="goHome" class="return-btn">
+      返回首页
+    </button>
+  </view>
+</view>

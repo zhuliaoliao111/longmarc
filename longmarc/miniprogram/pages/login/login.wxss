@@ -1,0 +1,227 @@
+/* pages/login/login.wxss */
+page {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.container {
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 背景图片 */
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* 欢迎文字 - 金色 */
+.welcome-text {
+  position: absolute;
+  top: 300rpx;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 10;
+  padding: 0 60rpx;
+}
+
+.welcome-title {
+  display: block;
+  font-size: 72rpx;
+  font-weight: bold;
+  color: #faf9f6;
+  margin-bottom: 20rpx;
+  font-family: "华文行楷", "Hiragino Sans GB", "Helvetica Neue", Arial, sans-serif;
+  text-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.6);
+  letter-spacing: 4rpx;
+  white-space: nowrap;
+}
+
+.welcome-subtitle {
+  display: block;
+  font-size: 32rpx;
+  color: #f8f6f4;
+  text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
+  line-height: 1.4;
+  font-family: "华文行楷", "Hiragino Sans GB", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* 国风复古卡片（原白色卡片） */
+.login-card {
+  position: absolute;
+  bottom: 60rpx;
+  left: 0;
+  right: 0;
+  background-color: #FDFBF6; /* 温暖的米白色，国风复古感 */
+  border-radius: 32rpx 32rpx 0 0;
+  padding: 50rpx 40rpx 30rpx;
+  box-shadow: 0 -8rpx 32rpx rgba(139, 124, 99, 0.15); /* 使用暖色调的阴影 */
+  max-height: calc(100vh - 400rpx);
+  min-height: 480rpx;
+  z-index: 5;
+}
+
+/* 登录区域 */
+.login-section {
+  text-align: center;
+  margin-bottom: 30rpx;
+  margin-top: 40rpx; /* 向上推 */
+}
+
+.login-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.login-subtitle {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 32rpx;
+}
+
+/* 登录按钮 */
+.login-btn {
+  width: 100%;
+  height: 88rpx;
+  border-radius: 44rpx;
+  border: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-btn:active {
+  transform: scale(0.98);
+}
+
+.wechat-btn {
+  background: linear-gradient(135deg, #631216, #8f1d22);
+  box-shadow: 0 6rpx 20rpx rgba(160, 27, 27, 0.3);
+}
+
+.btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.btn-text {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: white;
+}
+
+/* 分割线 */
+.divider {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32rpx; /* 只保留下边距 */
+  margin-top: 0; /* 设为0，避免相互影响 */
+}
+
+.divider-line {
+  flex: 1;
+  height: 1rpx;
+  background: #e5e5e5;
+}
+
+.divider-text {
+  padding: 0 20rpx;
+  font-size: 26rpx;
+  color: #999;
+}
+
+/* 其他选项 */
+.other-options {
+  margin-bottom: 50rpx; /* 增加底部距离，让游客登录和协议文本分开 */
+}
+
+.option-item {
+  text-align: center;
+  padding: 16rpx 20rpx;
+  margin-top: 0; /* 去掉顶部边距 */
+  position: relative;
+  top: -20rpx; /* 改为负值，让游客登录向上移动 */
+}
+
+.option-text {
+  font-size: 28rpx;
+  color: #666;
+  border-bottom: 1rpx solid #e5e5e5;
+}
+
+/* 协议说明 */
+.agreement {
+  text-align: center;
+  padding: 0 20rpx;
+}
+
+.agreement-text {
+  font-size: 24rpx;
+  color: #999;
+  line-height: 1.6;
+}
+
+.agreement-link {
+  color: #e8241d;
+  text-decoration: underline;
+}
+
+/* 响应式调整 */
+@media (max-width: 750rpx) {
+  .welcome-title {
+    font-size: 56rpx;
+    margin-bottom: 16rpx;
+    letter-spacing: 2rpx;
+  }
+  
+  .welcome-subtitle {
+    font-size: 28rpx;
+  }
+
+  .login-card {
+    padding: 40rpx 30rpx 30rpx;
+    min-height: 550rpx;
+  }
+
+  .login-section {
+    margin-bottom: 25rpx;
+  }
+
+  .login-title {
+    margin-bottom: 10rpx;
+  }
+
+  .login-subtitle {
+    margin-bottom: 28rpx;
+  }
+
+  .divider {
+    margin: 28rpx 0;
+  }
+
+  .other-options {
+    margin-bottom: 28rpx;
+  }
+
+  .login-btn {
+    height: 80rpx;
+  }
+
+  .btn-text {
+    font-size: 28rpx;
+  }
+}
