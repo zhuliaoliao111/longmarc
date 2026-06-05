@@ -4,8 +4,8 @@ const CryptoJS = require('crypto-js');
 // 腾讯云配置
 const TENCENT_CONFIG = {
   appId: '1380841699', 
-  secretId: 'AKIDUr7C5oLuMcidPEtPksnX8c4PacSDqUyI',
-  secretKey: 'DC1d4JMJ6h4JNI1PipkS0MWTDpQ3YsQ3',
+  secretId: 'xxx',
+  secretKey: 'xxxxx',
   region: 'ap-beijing',
   endpoint: 'tts.tencentcloudapi.com',
   version: '2019-08-23',
