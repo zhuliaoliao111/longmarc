@@ -1,8 +1,0 @@
-<view class="cover-container">
-  <image
-    class="cover-image"
-    src="{{coverImageUrl}}"
-    mode="aspectFill"
-    bindtap="goToHome"
-  />
-</view>
